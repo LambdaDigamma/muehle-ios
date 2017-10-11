@@ -204,7 +204,17 @@ class Game {
     
     private func updateRegisteredMorrisses() {
         
+        let cpRegisteredMorris = registeredMorris
         
+        for morris in cpRegisteredMorris {
+            
+            if !isTile(of: morris.player, at: morris.firstCoordinate) || !isTile(of: morris.player, at: morris.secondCoordiante) || !isTile(of: morris.player, at: morris.thirdCoordinate) {
+                
+                registeredMorris = registeredMorris.filter { $0 == morris }
+                
+            }
+            
+        }
         
     }
     

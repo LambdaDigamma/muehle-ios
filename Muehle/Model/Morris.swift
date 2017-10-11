@@ -14,6 +14,8 @@ class Morris: Equatable {
     var secondCoordiante: Coordinate
     var thirdCoordinate: Coordinate
     
+    var player: Player = nil
+    
     private static let morrises: [[Coordinate]] = [
         [Coordinate(col: 1, row: 4), Coordinate(col: 1, row: 1), Coordinate(col: 1, row: 7)], // Outer Morris
         [Coordinate(col: 4, row: 1), Coordinate(col: 1, row: 1), Coordinate(col: 7, row: 1)],
