@@ -24,4 +24,12 @@ class TileNode: SKSpriteNode {
         
     }
     
+    init(texture: SKTexture?, size: CGSize, tile: Tile) {
+        
+        self.tile = tile
+        
+        super.init(texture: texture, color: UIColor.clear, size: size)
+        
+    }
+    
 }

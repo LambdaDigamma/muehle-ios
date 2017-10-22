@@ -11,5 +11,6 @@ import UIKit
 class GameConfig {
     
     static let numberOfTiles = 9
+    static let volume: Float = 0.25
 
 }

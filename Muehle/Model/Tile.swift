@@ -6,9 +6,9 @@
 //  Copyright © 2017 Lennart Fischer. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class Tile {
+class Tile: Equatable {
     
     var coordinate: Coordinate
     var player: Player
@@ -19,5 +19,11 @@ class Tile {
         self.player = player
         
     }
+    
+}
 
+func ==(lhs: Tile, rhs: Tile) -> Bool {
+    
+    return lhs.coordinate == rhs.coordinate && lhs.player == rhs.player
+    
 }

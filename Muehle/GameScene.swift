@@ -9,16 +9,29 @@
 import SpriteKit
 import GameplayKit
 import Log
+import BulletinBoard
 
 class GameScene: SKScene, GameDelegate {
     
     // MARK: - Properties
     
+    public weak var viewController: GameViewController! {
+        didSet {
+            customize(theme: theme)
+        }
+    }
+    
     private let log = Logger()
     private var board: SKTileMapNode!
-    private var playerLabel: SKLabelNode!
     private var stateLabel: SKLabelNode!
     private var tileSprites: [TileNode] = []
+    private var theme = Theme.all[0]
+    
+    // Labels
+    private var whiteCounterLabel: SKLabelNode!
+    private var blackCounterLabel: SKLabelNode!
+    private var promptLabel: SKLabelNode!
+    private var backgroundSprite: SKSpriteNode!
     
     public var game = Game()
     
@@ -28,21 +41,79 @@ class GameScene: SKScene, GameDelegate {
     
     override func sceneDidLoad() {
 
-        guard let boardMap = childNode(withName: "BoardMapNode") as? SKTileMapNode else {
+        self.theme = (UIApplication.shared.delegate as! AppDelegate).settings.theme
+        
+        let boardNodeName = theme.boardColor == .white ? "WhiteBoardMapNode" : "BoardMapNode"
+        
+        guard let boardMap = childNode(withName: boardNodeName) as? SKTileMapNode else {
             fatalError("Board node not loaded")
         }
-        guard let playerNode = childNode(withName: "PlayerLabel") as? SKLabelNode else {
-            fatalError("Player node not loaded")
-        }
+        
         guard let stateNode = childNode(withName: "StateLabel") as? SKLabelNode else {
             fatalError("State node not loaded")
         }
         
+        guard let whiteCounterNode = childNode(withName: "WhiteCounterLabel") as? SKLabelNode else {
+            fatalError("White counter node not loaded")
+        }
+        
+        guard let blackCounterNode = childNode(withName: "BlackCounterLabel") as? SKLabelNode else {
+            fatalError("Black counter node not loaded")
+        }
+        
+        guard let promptNode = childNode(withName: "PromptLabel") as? SKLabelNode else {
+            fatalError("Prompt node not loaded")
+        }
+        
+        guard let backgroundNode = childNode(withName: "BackgroundSprite") as? SKSpriteNode else {
+            fatalError("Background node not loaded")
+        }
+        
         self.board = boardMap
-        self.playerLabel = playerNode
         self.stateLabel = stateNode
+        self.whiteCounterLabel = whiteCounterNode
+        self.blackCounterLabel = blackCounterNode
+        self.promptLabel = promptNode
+        self.backgroundSprite = backgroundNode
+        
+        self.board.zPosition = 50
         
         game.delegate = self
+        
+        startBackgroundMusic()
+        
+    }
+    
+    // MARK: - Theming
+    
+    private func startBackgroundMusic() {
+        
+        let delayInSeconds = 3.5
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + delayInSeconds) {
+            
+            guard let path = self.theme.soundPath else { return }
+            
+            SKTAudio.sharedInstance().playBackgroundMusic(path)
+            
+        }
+        
+    }
+    
+    private func customize(theme: Theme) {
+        
+        if let background = theme.image {
+            backgroundSprite.texture = SKTexture(image: background)
+        } else {
+            backgroundSprite.texture = nil
+        }
+        
+        stateLabel.fontColor = theme.textColor
+        whiteCounterLabel.fontColor = theme.textColor
+        blackCounterLabel.fontColor = theme.textColor
+        promptLabel.fontColor = theme.textColor
+        
+        viewController.closeButton.setTitleColor(theme.textColor, for: .normal)
         
     }
     
@@ -52,15 +123,6 @@ class GameScene: SKScene, GameDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        
-//        let coordinate = getCoordinate(from: touch)
-//
-//        tempArray.append(coordinate)
-//
-//        if tempArray.count == 3 {
-//            print(tempArray)
-//            tempArray = []
-//        }
         
         let coordinate = getCoordinate(from: touch)
         
@@ -91,17 +153,21 @@ class GameScene: SKScene, GameDelegate {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         
-        let coordinate = getCoordinate(from: touch)
-        
-        if let startCoordiante = movingStartCoordinate {
+        if game.state == .move || game.state == .jump {
             
-            if game.isValid(coordinate) && !game.isOccupied(coordinate) && game.turnIsAllowed(from: startCoordiante, to: coordinate) {
+            let coordinate = getCoordinate(from: touch)
+            
+            if let startCoordiante = movingStartCoordinate {
                 
-                tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
-                
-            } else if startCoordiante == coordinate {
-                
-                tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                if game.isValid(coordinate) && !game.isOccupied(coordinate) && game.turnIsAllowed(from: startCoordiante, to: coordinate) {
+                    
+                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    
+                } else if startCoordiante == coordinate {
+                    
+                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    
+                }
                 
             }
             
@@ -116,15 +182,33 @@ class GameScene: SKScene, GameDelegate {
         
         if let startCoordiante = movingStartCoordinate {
             
-            if game.isValid(coordinate) && !game.isOccupied(coordinate) && game.turnIsAllowed(from: startCoordiante, to: coordinate) {
+            if game.state == .move {
                 
-                tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                if game.isValid(coordinate) && !game.isOccupied(coordinate) && game.turnIsAllowed(from: startCoordiante, to: coordinate) {
+                    
+                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    
+                    game.register(turn: Turn(player: game.playerToMove, originCoordinate: startCoordiante, destinationCoordinate: coordinate))
+                    
+                } else if startCoordiante == coordinate {
+                    
+                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    
+                }
                 
-                game.register(turn: Turn(player: game.playerToMove, originCoordinate: startCoordiante, destinationCoordinate: coordinate))
+            } else if game.state == .jump {
                 
-            } else if startCoordiante == coordinate {
-                
-                tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                if game.isValid(coordinate) && !game.isOccupied(coordinate) {
+                    
+                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    
+                    game.register(turn: Turn(player: game.playerToMove, originCoordinate: startCoordiante, destinationCoordinate: coordinate))
+                    
+                } else if startCoordiante == coordinate {
+                    
+                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    
+                }
                 
             }
             
@@ -153,17 +237,21 @@ class GameScene: SKScene, GameDelegate {
         
     }
     
+    // --- UI
+    
     private func placeTile(_ tile: Tile) {
         
-        var color = UIColor.clear
+        var texture: SKTexture!
         
         if tile.player == .a {
-            color = UIColor.lightGray
+            texture = SKTexture(image: theme.playerATexture)
         } else {
-            color = UIColor.darkGray
+            texture = SKTexture(image: theme.playerBTexture)
         }
         
-        let tileSprite = TileNode(color: color, size: CGSize(width: 50, height: 50), tile: tile)
+        let size = CGSize(width: (scene?.size.width)! / 5, height: (scene?.size.width)! / 5)
+        
+        let tileSprite = TileNode(texture: texture, size: size, tile: tile)
         
         tileSprites.append(tileSprite)
         
@@ -175,11 +263,38 @@ class GameScene: SKScene, GameDelegate {
         
     }
     
+    private func removeTile(_ tile: Tile) {
+        
+        guard let sprite = tileSprites.filter({ $0.tile == tile }).first else { return }
+        
+        sprite.removeFromParent()
+        
+        tileSprites = tileSprites.filter { $0.tile != tile }
+        
+        log.info("Removed tile at \(tile.coordinate)")
+        
+    }
+    
+    private func updateCounterLabels() {
+        
+        whiteCounterLabel.text = "\(Player.a.rawValue): \(tileSprites.filter({ $0.tile.player == .a }).count)"
+        blackCounterLabel.text = "\(Player.b.rawValue): \(tileSprites.filter({ $0.tile.player == .b }).count)"
+        
+    }
+    
+    private func updatePromptLabel(with text: String) {
+        
+        promptLabel.text = text
+        
+    }
+    
     // MARK: - GameDelegate
     
     func place(tile: Tile) {
         
         placeTile(tile)
+        
+        updateCounterLabels()
         
     }
     
@@ -189,13 +304,35 @@ class GameScene: SKScene, GameDelegate {
         
     }
     
+    func remove(tile: Tile) {
+        
+        removeTile(tile)
+        
+        updateCounterLabels()
+        
+    }
+    
     func playerCanRemove(player: Player) {
+        
+        updatePromptLabel(with: "\(player.rawValue) darf entfernen")
         
     }
     
     func changedMoving(player: Player) {
         
-        playerLabel.text = "Spieler: \(player.rawValue)"
+        if game.state == .insert {
+            
+            updatePromptLabel(with: "\(player.rawValue) darf setzen")
+            
+        } else if game.state == .move {
+            
+            updatePromptLabel(with: "\(player.rawValue) am Zug")
+            
+        } else if game.state == .jump {
+            
+            updatePromptLabel(with: "\(player.rawValue) darf springen")
+            
+        }
         
     }
     
@@ -205,7 +342,18 @@ class GameScene: SKScene, GameDelegate {
             
             stateLabel.text = "Phase: Bewegen"
             
+        } else if state == .jump {
+            
+            stateLabel.text = "Phase: Springen"
+            
         }
+        
+    }
+    
+    func playerHasWon(_ player: Player) {
+        
+        log.info("\(player.rawValue) has won!")
+        
         
         
     }

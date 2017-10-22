@@ -7,7 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DF2316D21F96808700E8ACC3 /* GameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2316D11F96808700E8ACC3 /* GameMode.swift */; };
+		DF2316D41F9693D700E8ACC3 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2316D31F9693D700E8ACC3 /* Settings.swift */; };
+		DF2316D61F96943400E8ACC3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2316D51F96943400E8ACC3 /* Theme.swift */; };
+		DF2316D81F96A03E00E8ACC3 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2316D71F96A03E00E8ACC3 /* SettingsViewController.swift */; };
+		DF2316DA1F96A0D400E8ACC3 /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2316D91F96A0D400E8ACC3 /* ShopViewController.swift */; };
+		DF2316DC1F96A18500E8ACC3 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2316DB1F96A18500E8ACC3 /* InfoViewController.swift */; };
+		DF2316DF1F971B6800E8ACC3 /* AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2316DE1F971B6800E8ACC3 /* AI.swift */; };
+		DF2316E11F97EA8E00E8ACC3 /* Space Theme.wav in Resources */ = {isa = PBXBuildFile; fileRef = DF2316E01F97EA8E00E8ACC3 /* Space Theme.wav */; };
+		DF2316E31F98C76000E8ACC3 /* board.txt in Resources */ = {isa = PBXBuildFile; fileRef = DF2316E21F98C76000E8ACC3 /* board.txt */; };
+		DF2935EB1F955AA400DEBD4B /* SKTAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2935EA1F955AA300DEBD4B /* SKTAudio.swift */; };
+		DF2935EE1F955BC300DEBD4B /* Normal Theme.wav in Resources */ = {isa = PBXBuildFile; fileRef = DF2935ED1F955BC200DEBD4B /* Normal Theme.wav */; };
 		DF38D5141F8E7DE500238650 /* Morris.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF38D5131F8E7DE500238650 /* Morris.swift */; };
+		DF42C9321F939E6B000AF77E /* SwiftyButton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFB5D0811F9394730032FCF2 /* SwiftyButton.framework */; };
+		DF5FD51C1F94942400B98795 /* ThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5FD51B1F94942400B98795 /* ThemeViewController.swift */; };
+		DFA201261F9BFE7C00EC98F6 /* BulletinBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */; };
+		DFB5D0801F936A7A0032FCF2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB5D07F1F936A7A0032FCF2 /* MenuViewController.swift */; };
 		DFC1103F1F855DAD00ED5AF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC1103E1F855DAD00ED5AF2 /* AppDelegate.swift */; };
 		DFC110411F855DAD00ED5AF2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DFC110401F855DAD00ED5AF2 /* GameScene.sks */; };
 		DFC110431F855DAD00ED5AF2 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = DFC110421F855DAD00ED5AF2 /* Actions.sks */; };
@@ -28,11 +43,31 @@
 		DFC1106C1F855E1000ED5AF2 /* Turn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC110621F855E1000ED5AF2 /* Turn.swift */; };
 		DFC1106E1F85778A00ED5AF2 /* Tiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = DFC1106D1F85778A00ED5AF2 /* Tiles.sks */; };
 		DFC110711F87CFD900ED5AF2 /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFC110701F87CFD900ED5AF2 /* Log.framework */; };
+		DFDEC3971F9A8EFD00A2381E /* CollectionViewShelfLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFDEC3961F9A8EFD00A2381E /* CollectionViewShelfLayout.framework */; };
+		DFDEC3991F9A8FDE00A2381E /* ThemeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDEC3981F9A8FDE00A2381E /* ThemeCollectionViewCell.swift */; };
+		DFDEC39B1F9B429F00A2381E /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDEC39A1F9B429F00A2381E /* CustomButton.swift */; };
 		DFF4323E1F8982BB002EE8A0 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF4323D1F8982BB002EE8A0 /* TileNode.swift */; };
+		DFFCFF281F9BD3E700FF530F /* AIStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFCFF271F9BD3E600FF530F /* AIStrategy.swift */; };
+		DFFCFF2A1F9BE8F900FF530F /* RandomAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFCFF291F9BE8F900FF530F /* RandomAI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DF2316D11F96808700E8ACC3 /* GameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMode.swift; sourceTree = "<group>"; };
+		DF2316D31F9693D700E8ACC3 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		DF2316D51F96943400E8ACC3 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		DF2316D71F96A03E00E8ACC3 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		DF2316D91F96A0D400E8ACC3 /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
+		DF2316DB1F96A18500E8ACC3 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		DF2316DE1F971B6800E8ACC3 /* AI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
+		DF2316E01F97EA8E00E8ACC3 /* Space Theme.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Space Theme.wav"; sourceTree = "<group>"; };
+		DF2316E21F98C76000E8ACC3 /* board.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = board.txt; sourceTree = "<group>"; };
+		DF2935EA1F955AA300DEBD4B /* SKTAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTAudio.swift; sourceTree = "<group>"; };
+		DF2935ED1F955BC200DEBD4B /* Normal Theme.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Normal Theme.wav"; sourceTree = "<group>"; };
 		DF38D5131F8E7DE500238650 /* Morris.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Morris.swift; sourceTree = "<group>"; };
+		DF5FD51B1F94942400B98795 /* ThemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeViewController.swift; sourceTree = "<group>"; };
+		DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletinBoard.framework; path = Carthage/Build/iOS/BulletinBoard.framework; sourceTree = "<group>"; };
+		DFB5D07F1F936A7A0032FCF2 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		DFB5D0811F9394730032FCF2 /* SwiftyButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyButton.framework; path = Carthage/Build/iOS/SwiftyButton.framework; sourceTree = "<group>"; };
 		DFC1103B1F855DAD00ED5AF2 /* Muehle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Muehle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFC1103E1F855DAD00ED5AF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFC110401F855DAD00ED5AF2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -55,7 +90,12 @@
 		DFC110621F855E1000ED5AF2 /* Turn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Turn.swift; sourceTree = "<group>"; };
 		DFC1106D1F85778A00ED5AF2 /* Tiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Tiles.sks; sourceTree = "<group>"; };
 		DFC110701F87CFD900ED5AF2 /* Log.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log.framework; path = Carthage/Build/iOS/Log.framework; sourceTree = "<group>"; };
+		DFDEC3961F9A8EFD00A2381E /* CollectionViewShelfLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CollectionViewShelfLayout.framework; path = Carthage/Build/iOS/CollectionViewShelfLayout.framework; sourceTree = "<group>"; };
+		DFDEC3981F9A8FDE00A2381E /* ThemeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCollectionViewCell.swift; sourceTree = "<group>"; };
+		DFDEC39A1F9B429F00A2381E /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		DFF4323D1F8982BB002EE8A0 /* TileNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileNode.swift; sourceTree = "<group>"; };
+		DFFCFF271F9BD3E600FF530F /* AIStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIStrategy.swift; sourceTree = "<group>"; };
+		DFFCFF291F9BE8F900FF530F /* RandomAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,13 +103,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DFA201261F9BFE7C00EC98F6 /* BulletinBoard.framework in Frameworks */,
 				DFC110711F87CFD900ED5AF2 /* Log.framework in Frameworks */,
+				DF42C9321F939E6B000AF77E /* SwiftyButton.framework in Frameworks */,
+				DFDEC3971F9A8EFD00A2381E /* CollectionViewShelfLayout.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DF2316DD1F971AAF00E8ACC3 /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				DF2316DE1F971B6800E8ACC3 /* AI.swift */,
+				DFFCFF271F9BD3E600FF530F /* AIStrategy.swift */,
+				DFFCFF291F9BE8F900FF530F /* RandomAI.swift */,
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
+		DF2935EC1F955BB300DEBD4B /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				DF2935ED1F955BC200DEBD4B /* Normal Theme.wav */,
+				DF2316E01F97EA8E00E8ACC3 /* Space Theme.wav */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		DFC110321F855DAD00ED5AF2 = {
 			isa = PBXGroup;
 			children = (
@@ -92,16 +154,20 @@
 			children = (
 				DFC1103E1F855DAD00ED5AF2 /* AppDelegate.swift */,
 				DFC110401F855DAD00ED5AF2 /* GameScene.sks */,
-				DFC110421F855DAD00ED5AF2 /* Actions.sks */,
 				DFC110441F855DAD00ED5AF2 /* GameScene.swift */,
+				DFC110421F855DAD00ED5AF2 /* Actions.sks */,
 				DFC110561F855DB600ED5AF2 /* Model */,
 				DFC110571F855DBB00ED5AF2 /* View */,
 				DFC110581F855DC100ED5AF2 /* Controller */,
+				DF2935EC1F955BB300DEBD4B /* Sounds */,
+				DF2935EA1F955AA300DEBD4B /* SKTAudio.swift */,
 				DFC110481F855DAD00ED5AF2 /* Main.storyboard */,
 				DFC1104B1F855DAD00ED5AF2 /* Assets.xcassets */,
 				DFC1106D1F85778A00ED5AF2 /* Tiles.sks */,
 				DFC1104D1F855DAD00ED5AF2 /* LaunchScreen.storyboard */,
 				DFC110501F855DAD00ED5AF2 /* Info.plist */,
+				DF2316D31F9693D700E8ACC3 /* Settings.swift */,
+				DF2316E21F98C76000E8ACC3 /* board.txt */,
 			);
 			path = Muehle;
 			sourceTree = "<group>";
@@ -120,6 +186,9 @@
 				DFC1105D1F855E0F00ED5AF2 /* Tile.swift */,
 				DFC110621F855E1000ED5AF2 /* Turn.swift */,
 				DF38D5131F8E7DE500238650 /* Morris.swift */,
+				DF2316D11F96808700E8ACC3 /* GameMode.swift */,
+				DF2316D51F96943400E8ACC3 /* Theme.swift */,
+				DF2316DD1F971AAF00E8ACC3 /* AI */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -128,6 +197,8 @@
 			isa = PBXGroup;
 			children = (
 				DFF4323D1F8982BB002EE8A0 /* TileNode.swift */,
+				DFDEC3981F9A8FDE00A2381E /* ThemeCollectionViewCell.swift */,
+				DFDEC39A1F9B429F00A2381E /* CustomButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -136,6 +207,11 @@
 			isa = PBXGroup;
 			children = (
 				DFC110461F855DAD00ED5AF2 /* GameViewController.swift */,
+				DFB5D07F1F936A7A0032FCF2 /* MenuViewController.swift */,
+				DF5FD51B1F94942400B98795 /* ThemeViewController.swift */,
+				DF2316D71F96A03E00E8ACC3 /* SettingsViewController.swift */,
+				DF2316D91F96A0D400E8ACC3 /* ShopViewController.swift */,
+				DF2316DB1F96A18500E8ACC3 /* InfoViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -143,6 +219,9 @@
 		DFC1106F1F87CFD900ED5AF2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */,
+				DFDEC3961F9A8EFD00A2381E /* CollectionViewShelfLayout.framework */,
+				DFB5D0811F9394730032FCF2 /* SwiftyButton.framework */,
 				DFC110701F87CFD900ED5AF2 /* Log.framework */,
 			);
 			name = Frameworks;
@@ -210,9 +289,12 @@
 			files = (
 				DFC1104A1F855DAD00ED5AF2 /* Main.storyboard in Resources */,
 				DFC110411F855DAD00ED5AF2 /* GameScene.sks in Resources */,
+				DF2316E31F98C76000E8ACC3 /* board.txt in Resources */,
+				DF2316E11F97EA8E00E8ACC3 /* Space Theme.wav in Resources */,
 				DFC1104C1F855DAD00ED5AF2 /* Assets.xcassets in Resources */,
 				DFC1106E1F85778A00ED5AF2 /* Tiles.sks in Resources */,
 				DFC1104F1F855DAD00ED5AF2 /* LaunchScreen.storyboard in Resources */,
+				DF2935EE1F955BC300DEBD4B /* Normal Theme.wav in Resources */,
 				DFC110431F855DAD00ED5AF2 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,6 +309,9 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Log.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftyButton.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CollectionViewShelfLayout.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BulletinBoard.framework",
 			);
 			outputPaths = (
 			);
@@ -241,20 +326,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DFDEC3991F9A8FDE00A2381E /* ThemeCollectionViewCell.swift in Sources */,
+				DFFCFF2A1F9BE8F900FF530F /* RandomAI.swift in Sources */,
 				DF38D5141F8E7DE500238650 /* Morris.swift in Sources */,
+				DFDEC39B1F9B429F00A2381E /* CustomButton.swift in Sources */,
 				DFC1106A1F855E1000ED5AF2 /* Player.swift in Sources */,
+				DF2316D21F96808700E8ACC3 /* GameMode.swift in Sources */,
 				DFC110451F855DAD00ED5AF2 /* GameScene.swift in Sources */,
+				DF2935EB1F955AA400DEBD4B /* SKTAudio.swift in Sources */,
 				DFC1106B1F855E1000ED5AF2 /* Difficulty.swift in Sources */,
+				DF2316D61F96943400E8ACC3 /* Theme.swift in Sources */,
 				DFC110681F855E1000ED5AF2 /* Game.swift in Sources */,
 				DFC110471F855DAD00ED5AF2 /* GameViewController.swift in Sources */,
 				DFF4323E1F8982BB002EE8A0 /* TileNode.swift in Sources */,
 				DFC1106C1F855E1000ED5AF2 /* Turn.swift in Sources */,
 				DFC1103F1F855DAD00ED5AF2 /* AppDelegate.swift in Sources */,
 				DFC110671F855E1000ED5AF2 /* Tile.swift in Sources */,
+				DF2316D81F96A03E00E8ACC3 /* SettingsViewController.swift in Sources */,
 				DFC110631F855E1000ED5AF2 /* GameConfig.swift in Sources */,
+				DF5FD51C1F94942400B98795 /* ThemeViewController.swift in Sources */,
+				DF2316D41F9693D700E8ACC3 /* Settings.swift in Sources */,
+				DFB5D0801F936A7A0032FCF2 /* MenuViewController.swift in Sources */,
+				DF2316DF1F971B6800E8ACC3 /* AI.swift in Sources */,
 				DFC110651F855E1000ED5AF2 /* Event.swift in Sources */,
 				DFC110661F855E1000ED5AF2 /* State.swift in Sources */,
 				DFC110641F855E1000ED5AF2 /* Array2D.swift in Sources */,
+				DFFCFF281F9BD3E700FF530F /* AIStrategy.swift in Sources */,
+				DF2316DA1F96A0D400E8ACC3 /* ShopViewController.swift in Sources */,
+				DF2316DC1F96A18500E8ACC3 /* InfoViewController.swift in Sources */,
 				DFC110691F855E1000ED5AF2 /* Coordinate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

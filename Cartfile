@@ -1,1 +1,6 @@
 github "delba/Log"
+github "TakeScoop/SwiftyButton" "lois-swift4"
+github "marmelroy/TVButton"
+github "bwide/CollectionNode"
+github "pitiphong-p/CollectionViewShelfLayout"
+github "alexaubry/BulletinBoard"
