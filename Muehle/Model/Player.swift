@@ -10,7 +10,7 @@ import UIKit
 
 enum Player: String {
     
-    case a = "Blau" // "Weiß"
-    case b = "Rot" // "Schwarz"
+    case a = "Blue" // "Weiß"
+    case b = "Red" // "Schwarz"
     
 }

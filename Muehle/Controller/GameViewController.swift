@@ -15,11 +15,10 @@ class GameViewController: UIViewController {
 
     var mode: GameMode = .pvp
     
+    let rootItem = PageBulletinItem(title: "You won!")
+    
     lazy var winningBulletinManager: BulletinManager = {
         
-        let rootItem = PageBulletinItem(title: "You won!")
-        
-        rootItem.descriptionText = "Congratulations! You have won!"
         rootItem.image = #imageLiteral(resourceName: "won")
         rootItem.interfaceFactory.tintColor = UIColor(red: 0.294, green: 0.85, blue: 0.392, alpha: 1) // green
         rootItem.interfaceFactory.actionButtonTitleColor = .white
@@ -53,6 +52,32 @@ class GameViewController: UIViewController {
     lazy var losingBulletinManager: BulletinManager = {
         
         let rootItem = PageBulletinItem(title: "You lost!")
+        
+        rootItem.interfaceFactory.tintColor = UIColor.red
+        rootItem.interfaceFactory.actionButtonTitleColor = .white
+        
+        rootItem.actionButtonTitle = "Play again"
+        rootItem.alternativeButtonTitle = "Not now"
+        
+        rootItem.actionHandler = { item in
+            
+            
+            
+        }
+        
+        rootItem.alternativeHandler = { item in
+            
+            // Dismiss Bulletin
+            self.dismiss(animated: true, completion: nil)
+            
+            // Dismiss To Menu After .5 sec
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                
+                self.dismiss(animated: true, completion: nil)
+                
+            })
+            
+        }
         
         return BulletinManager(rootItem: rootItem)
         
@@ -96,20 +121,35 @@ class GameViewController: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    // MARK: - Game
+    
+    public func presentWinningBulletin(for player: Player, withMode mode: GameMode) {
         
-        winningBulletinManager.backgroundViewStyle = .blurredDark
-        winningBulletinManager.prepare()
-        winningBulletinManager.presentBulletin(above: self)
+        if mode == .pvp {
+            
+            rootItem.descriptionText = "Congratulations! \(player.rawValue) has won!"
+            
+            winningBulletinManager.backgroundViewStyle = .blurredDark
+            winningBulletinManager.prepare()
+            winningBulletinManager.presentBulletin(above: self)
+            
+        } else {
+            
+            rootItem.descriptionText = "Congratulations! You have won against the AI!"
+            
+            winningBulletinManager.backgroundViewStyle = .blurredDark
+            winningBulletinManager.prepare()
+            winningBulletinManager.presentBulletin(above: self)
+            
+        }
         
     }
     
-    // MARK: - Game
-    
-    public func presentWinningBulletin(for player: Player, withDifficulty difficulty: Difficulty) {
+    public func presentLosingBulletin() {
         
-        
+        losingBulletinManager.backgroundViewStyle = .blurredDark
+        losingBulletinManager.prepare()
+        losingBulletinManager.presentBulletin(above: self)
         
     }
     
