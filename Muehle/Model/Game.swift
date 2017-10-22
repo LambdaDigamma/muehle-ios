@@ -36,12 +36,6 @@ class Game {
     public var mode: GameMode = .pvp
     public var playerToMove: Player = .a
     
-    public var canMove: Bool {
-        
-        return state == .move
-        
-    }
-    
     private var turns: [Turn] = []
     private var tiles: [Tile] = []
     private var totalTileCounter = 0
