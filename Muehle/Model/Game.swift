@@ -28,19 +28,20 @@ protocol GameDelegate {
 }
 
 class Game {
-
+    
     // MARK: - Properties
     
     public var delegate: GameDelegate? = nil
     public var state: State = .insert
     public var mode: GameMode = .pvp
     public var playerToMove: Player = .a
+    public var ai: AI? = nil
     
     private var turns: [Turn] = []
-    private var tiles: [Tile] = []
+    public var tiles: [Tile] = []
     private var totalTileCounter = 0
     private var registeredMorris: [Morris] = []
-    private var playerCanRemove: Player? = nil
+    public var playerCanRemove: Player? = nil
     
     private let log = Logger()
     
@@ -69,6 +70,23 @@ class Game {
                                         Coordinate(col: 6, row: 3),
                                         Coordinate(col: 5, row: 2),
                                         Coordinate(col: 4, row: 4)]
+    
+    init() {
+        
+    }
+    
+    init(mode: GameMode) {
+        
+        self.mode = mode
+        
+        switch mode {
+        case .pvp: ai = nil
+        case .pveEasy: ai = RandomAI(game: self)
+        case .pveMedium: ai = nil
+        case .pveHard: ai = nil
+        }
+        
+    }
     
     // MARK: - Methods
     // Private
@@ -161,7 +179,7 @@ class Game {
         
     }
     
-    private func validCoordinates(from coordinate: Coordinate) -> [Coordinate] {
+    public func allowedTurns(from coordinate: Coordinate) -> [Coordinate] {
         
         let allowedTurns: [Coordinate: [Coordinate]] = [
             
@@ -212,6 +230,12 @@ class Game {
             return []
             
         }
+        
+    }
+    
+    private func validCoordinates(from coordinate: Coordinate) -> [Coordinate] {
+        
+        return allowedTurns(from: coordinate)
         
     }
     
@@ -294,14 +318,14 @@ class Game {
                     
                 } else {
                     
-                    changeCurrentPlayer()
-                    
                     if totalTileCounter == GameConfig.numberOfTiles * 2 {
                         
                         state = .move
                         delegate?.changedState(.move)
                         
                     }
+                    
+                    changeCurrentPlayer()
                     
                 }
                 
@@ -313,9 +337,13 @@ class Game {
     
     public func register(turn: Turn) {
         
+        // TODO: Morris Checking
+        
         if state == .move || state == .jump {
             
             if let tile = tiles.filter({ $0.coordinate == turn.originCoordinate }).first {
+                
+                log.debug("Logic - Turn: \(turn)")
                 
                 tile.coordinate = turn.destinationCoordinate
                 
@@ -331,13 +359,19 @@ class Game {
                 
                 playerCanRemove = turn.player
                 
-                delegate?.playerCanRemove(player: turn.player)
+                if !everyTileInMorris(for: turn.player == .a ? .b : .a) {
+                    
+                    delegate?.playerCanRemove(player: turn.player)
+                    
+                }
                 
             } else {
                 
                 changeCurrentPlayer()
                 
             }
+            
+            updateRegisteredMorrisses()
             
         }
         
@@ -382,6 +416,30 @@ class Game {
             return false
             
         }
+        
+    }
+    
+    public func allCoordinates() -> [Coordinate] {
+        
+        var allCoordinates: [Coordinate] = []
+        
+        for row in 1..<8 {
+            
+            for col in 1..<8 {
+                
+                let cord = Coordinate(col: col, row: row)
+                
+                if notAllowedCoordinates.filter({ $0 == cord }).count == 0 {
+                    
+                    allCoordinates.append(cord)
+                    
+                }
+                
+            }
+            
+        }
+        
+        return allCoordinates
         
     }
     
@@ -464,6 +522,60 @@ class Game {
         } else {
             return nil
         }
+        
+    }
+    
+    public static func midGame(scene: GameScene) -> Game {
+    
+        let game = Game()
+        game.delegate = scene
+        
+        game.registerTouch(at: Coordinate(col: 1, row: 1))
+        game.registerTouch(at: Coordinate(col: 4, row: 1))
+        game.registerTouch(at: Coordinate(col: 7, row: 1))
+        game.registerTouch(at: Coordinate(col: 2, row: 2))
+        game.registerTouch(at: Coordinate(col: 6, row: 4))
+        game.registerTouch(at: Coordinate(col: 6, row: 2))
+        game.registerTouch(at: Coordinate(col: 2, row: 4))
+        game.registerTouch(at: Coordinate(col: 1, row: 7))
+        game.registerTouch(at: Coordinate(col: 3, row: 5))
+        game.registerTouch(at: Coordinate(col: 7, row: 7))
+        game.registerTouch(at: Coordinate(col: 4, row: 7))
+        game.registerTouch(at: Coordinate(col: 5, row: 5))
+        game.registerTouch(at: Coordinate(col: 7, row: 4))
+        game.registerTouch(at: Coordinate(col: 5, row: 3))
+        game.registerTouch(at: Coordinate(col: 3, row: 3))
+        game.registerTouch(at: Coordinate(col: 4, row: 6))
+        game.registerTouch(at: Coordinate(col: 6, row: 6))
+        
+        return game
+    
+    }
+    
+    public static func endGame(scene: GameScene) -> Game {
+        
+        let game = Game()
+        game.delegate = scene
+        
+        game.registerTouch(at: Coordinate(col: 1, row: 1))
+        game.registerTouch(at: Coordinate(col: 4, row: 1))
+        game.registerTouch(at: Coordinate(col: 7, row: 1))
+        game.registerTouch(at: Coordinate(col: 2, row: 2))
+        game.registerTouch(at: Coordinate(col: 6, row: 4))
+        game.registerTouch(at: Coordinate(col: 6, row: 2))
+        game.registerTouch(at: Coordinate(col: 2, row: 4))
+        game.registerTouch(at: Coordinate(col: 1, row: 7))
+        game.registerTouch(at: Coordinate(col: 3, row: 5))
+        game.registerTouch(at: Coordinate(col: 7, row: 7))
+        game.registerTouch(at: Coordinate(col: 4, row: 7))
+        game.registerTouch(at: Coordinate(col: 5, row: 5))
+        game.registerTouch(at: Coordinate(col: 7, row: 4))
+        game.registerTouch(at: Coordinate(col: 5, row: 3))
+        game.registerTouch(at: Coordinate(col: 3, row: 3))
+        game.registerTouch(at: Coordinate(col: 4, row: 6))
+        game.registerTouch(at: Coordinate(col: 6, row: 6))
+        
+        return game
         
     }
     

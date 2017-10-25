@@ -9,13 +9,11 @@
 import Foundation
 
 protocol AI {
-
-    func registerEnemyTile(_ tile: Tile)
-    
-    func registerEnemyTurn(_ turn: Turn)
     
     func determineTile() -> Coordinate
     
+    func determineTurn() -> Turn
     
-
+    func determineRemovingCoordinate() -> Coordinate
+    
 }

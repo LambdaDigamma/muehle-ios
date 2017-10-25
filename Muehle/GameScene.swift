@@ -38,7 +38,6 @@ class GameScene: SKScene, GameDelegate {
     
     override func sceneDidLoad() {
 
-        
         self.theme = (UIApplication.shared.delegate as! AppDelegate).settings.theme
         
         // Load Board For Theme Color
@@ -63,7 +62,8 @@ class GameScene: SKScene, GameDelegate {
         self.board.zPosition = 50
         
         // Set Game Delegate
-        game.delegate = self
+        self.game = Game.midGame(scene: self)
+        self.game.delegate = self
         
         // Start Background Music For Theme
         startBackgroundMusic()
@@ -110,13 +110,21 @@ class GameScene: SKScene, GameDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         
+        // TODO: JUMPING LOL, ADD IF
+        
         // Get Coordinate From Touch Location
         let coordinate = getCoordinate(from: touch)
         
-        if game.state == .move {
+        if game.playerCanRemove != nil {
+            
+            validateAndRegisterTouch(at: coordinate)
+            
+        } else if game.state == .move || game.state == .jump {
             
             // Check For TileSprites At Touched Coordinate And For Player To Move
-            if tileSprites.filter({ $0.tile.player == game.playerToMove && $0.tile.coordinate == coordinate }).count > 0 {
+            if let sprite = tileSprites.filter({ $0.tile.player == game.playerToMove && $0.tile.coordinate == coordinate }).first {
+                
+                sprite.run(SKAction.scale(to: 1.5, duration: 0.01))
                 
                 // Set Start Coordinate For Movement
                 movingStartCoordinate = coordinate
@@ -126,16 +134,7 @@ class GameScene: SKScene, GameDelegate {
         } else {
             
             // Validate Coordinate
-            if game.isValid(coordinate) {
-                
-                // Register Touch In Game Model
-                game.registerTouch(at: coordinate)
-                
-            } else {
-                
-                log.warning("Invalid touch location")
-                
-            }
+            validateAndRegisterTouch(at: coordinate)
             
         }
         
@@ -153,16 +152,42 @@ class GameScene: SKScene, GameDelegate {
             // Validate Start Coordinate
             if let startCoordiante = movingStartCoordinate {
                 
-                // Validate Coordinate And Allowance
-                if game.isValid(coordinate) && !game.isOccupied(coordinate) && game.turnIsAllowed(from: startCoordiante, to: coordinate) {
+                if game.tiles.filter ({ $0.player == game.playerToMove }).count <= 3 {
                     
-                    // Set New Center
-                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    if game.state == .jump {
+                        
+                        // TODO: Implement Jumping,
+                        
+                        if game.isValid(coordinate) && !game.isOccupied(coordinate) {
+                            
+                            // Set New Center
+                            tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                            
+                        } else if startCoordiante == coordinate {
+                            
+                            // Reset Tile To Its Old Coordinate
+                            tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                            
+                        }
+                        
+                    }
                     
-                } else if startCoordiante == coordinate {
+                } else {
                     
-                    // Reset Tile To Its Old Coordinate
-                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    // TODO: Default moving behaviour
+                    
+                    // Validate Coordinate And Allowance
+                    if game.isValid(coordinate) && !game.isOccupied(coordinate) && game.turnIsAllowed(from: startCoordiante, to: coordinate) {
+                        
+                        // Set New Center
+                        tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                        
+                    } else if startCoordiante == coordinate {
+                        
+                        // Reset Tile To Its Old Coordinate
+                        tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                        
+                    }
                     
                 }
                 
@@ -180,6 +205,12 @@ class GameScene: SKScene, GameDelegate {
         
         // Validate Start Coordinate
         if let startCoordiante = movingStartCoordinate {
+            
+            if let sprite = tileSprites.filter({ $0.tile.coordinate == startCoordiante }).first {
+                
+                sprite.run(SKAction.scale(to: 1, duration: 0.01))
+                
+            }
             
             // Check Game State
             if game.state == .move {
@@ -229,6 +260,19 @@ class GameScene: SKScene, GameDelegate {
     
     // MARK: - Game
     
+    public func load(game: Game) {
+        
+        self.game = game
+        self.game.delegate = self
+        
+        for tile in self.game.tiles {
+            
+            place(tile: tile)
+            
+        }
+        
+    }
+    
     private func getCoordinate(from touch: UITouch) -> Coordinate {
         
         // Adding 1 To Row And Column To Create Non-Zero-Based Coordinate System
@@ -245,6 +289,37 @@ class GameScene: SKScene, GameDelegate {
         let point = board.centerOfTile(atColumn: coordinate.col - 1, row: coordinate.row - 1)
         
         return point
+        
+    }
+    
+    public func restart() {
+        
+        game = Game()
+        game.delegate = self
+        
+        for sprite in tileSprites {
+            
+            sprite.removeFromParent()
+            
+        }
+        
+        tileSprites.removeAll()
+        
+    }
+    
+    public func validateAndRegisterTouch(at coordinate: Coordinate) {
+        
+        // Validate Coordinate
+        if game.isValid(coordinate) {
+            
+            // Register Touch In Game Model
+            game.registerTouch(at: coordinate)
+            
+        } else {
+            
+            log.warning("Invalid touch location")
+            
+        }
         
     }
     
@@ -330,7 +405,7 @@ class GameScene: SKScene, GameDelegate {
     
     func playerCanRemove(player: Player) {
         
-        updatePromptLabel(with: "\(player.rawValue) darf entfernen")
+        updatePromptLabel(with: "\(player.rawValue) to remove")
         
     }
     
@@ -338,15 +413,15 @@ class GameScene: SKScene, GameDelegate {
         
         if game.state == .insert {
             
-            updatePromptLabel(with: "\(player.rawValue) darf setzen")
+            updatePromptLabel(with: "\(player.rawValue) to set")
             
         } else if game.state == .move {
             
-            updatePromptLabel(with: "\(player.rawValue) am Zug")
+            updatePromptLabel(with: "\(player.rawValue) to move")
             
         } else if game.state == .jump {
             
-            updatePromptLabel(with: "\(player.rawValue) darf springen")
+            updatePromptLabel(with: "\(player.rawValue) to jump")
             
         }
         
@@ -356,11 +431,11 @@ class GameScene: SKScene, GameDelegate {
         
         if state == .move {
             
-            stateLabel.text = "Phase: Bewegen"
+            stateLabel.text = "Phase: Move"
             
         } else if state == .jump {
             
-            stateLabel.text = "Phase: Springen"
+            stateLabel.text = "Phase: Jump"
             
         }
         
@@ -370,7 +445,15 @@ class GameScene: SKScene, GameDelegate {
         
         log.info("\(player.rawValue) has won!")
         
-        viewController.presentWinningBulletin(for: player, withMode: game.mode)
+        if player == .b && game.mode != .pvp {
+            
+            viewController.presentLosingBulletin()
+            
+        } else {
+            
+            viewController.presentWinningBulletin(for: player, withMode: game.mode)
+            
+        }
         
     }
     

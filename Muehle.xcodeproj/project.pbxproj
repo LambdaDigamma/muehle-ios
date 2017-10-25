@@ -20,6 +20,7 @@
 		DF2935EE1F955BC300DEBD4B /* Normal Theme.wav in Resources */ = {isa = PBXBuildFile; fileRef = DF2935ED1F955BC200DEBD4B /* Normal Theme.wav */; };
 		DF38D5141F8E7DE500238650 /* Morris.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF38D5131F8E7DE500238650 /* Morris.swift */; };
 		DF42C9321F939E6B000AF77E /* SwiftyButton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFB5D0811F9394730032FCF2 /* SwiftyButton.framework */; };
+		DF4E9FAD1F9F05210003AA85 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4E9FAC1F9F05210003AA85 /* Extensions.swift */; };
 		DF5FD51C1F94942400B98795 /* ThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5FD51B1F94942400B98795 /* ThemeViewController.swift */; };
 		DFA201261F9BFE7C00EC98F6 /* BulletinBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */; };
 		DFB5D0801F936A7A0032FCF2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB5D07F1F936A7A0032FCF2 /* MenuViewController.swift */; };
@@ -64,6 +65,7 @@
 		DF2935EA1F955AA300DEBD4B /* SKTAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTAudio.swift; sourceTree = "<group>"; };
 		DF2935ED1F955BC200DEBD4B /* Normal Theme.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Normal Theme.wav"; sourceTree = "<group>"; };
 		DF38D5131F8E7DE500238650 /* Morris.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Morris.swift; sourceTree = "<group>"; };
+		DF4E9FAC1F9F05210003AA85 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		DF5FD51B1F94942400B98795 /* ThemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeViewController.swift; sourceTree = "<group>"; };
 		DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletinBoard.framework; path = Carthage/Build/iOS/BulletinBoard.framework; sourceTree = "<group>"; };
 		DFB5D07F1F936A7A0032FCF2 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				DFC110501F855DAD00ED5AF2 /* Info.plist */,
 				DF2316D31F9693D700E8ACC3 /* Settings.swift */,
 				DF2316E21F98C76000E8ACC3 /* board.txt */,
+				DF4E9FAC1F9F05210003AA85 /* Extensions.swift */,
 			);
 			path = Muehle;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				DFC110651F855E1000ED5AF2 /* Event.swift in Sources */,
 				DFC110661F855E1000ED5AF2 /* State.swift in Sources */,
 				DFC110641F855E1000ED5AF2 /* Array2D.swift in Sources */,
+				DF4E9FAD1F9F05210003AA85 /* Extensions.swift in Sources */,
 				DFFCFF281F9BD3E700FF530F /* AIStrategy.swift in Sources */,
 				DF2316DA1F96A0D400E8ACC3 /* ShopViewController.swift in Sources */,
 				DF2316DC1F96A18500E8ACC3 /* InfoViewController.swift in Sources */,

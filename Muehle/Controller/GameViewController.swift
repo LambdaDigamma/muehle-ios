@@ -13,21 +13,22 @@ import BulletinBoard
 
 class GameViewController: UIViewController {
 
-    var mode: GameMode = .pvp
+    public var mode: GameMode = .pvp
     
-    let rootItem = PageBulletinItem(title: "You won!")
+    private let rootItem = PageBulletinItem(title: "You won!")
+    private var gameScene: GameScene!
     
-    lazy var winningBulletinManager: BulletinManager = {
+    private lazy var winningBulletinManager: BulletinManager = {
         
         rootItem.image = #imageLiteral(resourceName: "won")
-        rootItem.interfaceFactory.tintColor = UIColor(red: 0.294, green: 0.85, blue: 0.392, alpha: 1) // green
+        rootItem.interfaceFactory.tintColor = UIColor(red: 0.294, green: 0.85, blue: 0.392, alpha: 1)
         rootItem.interfaceFactory.actionButtonTitleColor = .white
         rootItem.actionButtonTitle = "Play again"
         rootItem.alternativeButtonTitle = "Not now"
         
         rootItem.actionHandler = { item in
             
-            
+            self.gameScene.restart()
             
         }
         
@@ -49,7 +50,7 @@ class GameViewController: UIViewController {
         
     }()
     
-    lazy var losingBulletinManager: BulletinManager = {
+    private lazy var losingBulletinManager: BulletinManager = {
         
         let rootItem = PageBulletinItem(title: "You lost!")
         
@@ -61,7 +62,7 @@ class GameViewController: UIViewController {
         
         rootItem.actionHandler = { item in
             
-            
+            self.gameScene.restart()
             
         }
         
@@ -99,6 +100,8 @@ class GameViewController: UIViewController {
         if let scene = GKScene(fileNamed: "GameScene") {
             
             if let sceneNode = scene.rootNode as! GameScene? {
+                
+                self.gameScene = sceneNode
                 
                 sceneNode.viewController = self
                 

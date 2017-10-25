@@ -71,7 +71,7 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellIdentifier.theme, for: indexPath) as! ThemeCollectionViewCell
         
-        cell.isUserInteractionEnabled = false
+//        cell.isUserInteractionEnabled = false
         
         cell.theme = Theme.all[indexPath.row]
         

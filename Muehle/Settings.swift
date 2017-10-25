@@ -14,6 +14,7 @@ class Settings {
     private let kLooses = "kLooses"
     private let kCoins = "kCoins"
     private let kTheme = "kTheme"
+    private let kGame = "kGame"
     
     var theme: Theme {
         
@@ -86,6 +87,22 @@ class Settings {
         set {
             
             UserDefaults.standard.set(newValue, forKey: kLooses)
+            
+        }
+        
+    }
+    
+    var savedGame: Game {
+        
+        get {
+            
+            return UserDefaults.standard.object(forKey: kGame) as? Game ?? Game()
+            
+        }
+        
+        set {
+            
+            UserDefaults.standard.set(newValue, forKey: kGame)
             
         }
         

@@ -30,8 +30,8 @@ class ThemeCollectionViewCell: UICollectionViewCell {
             
             layer.cornerRadius = 20
             
-            themeImageView.alpha = 0.65
-            effectView.alpha = 0.65
+//            themeImageView.alpha = 0.65
+//            effectView.alpha = 0.65
             
         }
     }
