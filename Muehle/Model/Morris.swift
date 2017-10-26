@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Morris: Equatable {
+class Morris: Equatable, CustomStringConvertible {
     
     var firstCoordinate: Coordinate
     var secondCoordiante: Coordinate
@@ -58,6 +58,9 @@ class Morris: Equatable {
         
     }
     
+    public var description: String {
+        return "Morris: 1. \(firstCoordinate), 2. \(secondCoordiante), 3. \(thirdCoordinate)"
+    }
     
 
 }

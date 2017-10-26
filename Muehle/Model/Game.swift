@@ -33,16 +33,25 @@ class Game {
     
     public var delegate: GameDelegate? = nil
     public var state: State = .insert
-    public var mode: GameMode = .pvp
     public var playerToMove: Player = .a
     public var ai: AI? = nil
+    public var mode: GameMode = .pvp {
+        didSet {
+            switch mode {
+            case .pvp: ai = nil
+            case .pveEasy: ai = RandomAI(game: self)
+            case .pveMedium: ai = nil
+            case .pveHard: ai = nil
+            }
+        }
+    }
     
-    private var turns: [Turn] = []
     public var tiles: [Tile] = []
-    private var totalTileCounter = 0
-    private var registeredMorris: [Morris] = []
+    private var turns: [Turn] = []
     public var playerCanRemove: Player? = nil
     
+    private var totalTileCounter = 0
+    private var registeredMorris: [Morris] = []
     private let log = Logger()
     
     public let notAllowedCoordinates = [Coordinate(col: 2, row: 1),
@@ -89,7 +98,173 @@ class Game {
     }
     
     // MARK: - Methods
-    // Private
+    
+    // Public
+    // --- Main Game Event Registering & UI Interaction
+    
+    public func registerTouch(at coordinate: Coordinate) {
+        
+        // ------ Touch To Remove
+        
+        if let removingPlayer = playerCanRemove {
+            
+            if !isTile(of: removingPlayer, at: coordinate) && !isInMorris(coordinate: coordinate) {
+                
+                playerCanRemove = nil
+                
+                guard let tile = tiles.filter({ $0.coordinate == coordinate }).first else { return }
+                
+                tiles = tiles.filter({ $0.coordinate != coordinate })
+                
+                updateRegisteredMorrisses()
+                
+                delegate?.remove(tile: tile)
+                
+                if playerATiles == 3 && state == .move {
+                    
+                    // TODO: Implement Jumping
+                    
+                    state = .jump
+                    delegate?.changedState(.jump)
+                    
+                } else if playerBTiles == 3 && state == .move {
+                    
+                    state = .jump
+                    delegate?.changedState(.jump)
+                    
+                    // TODO: Implement Jumping
+                    
+                }
+                
+                if gameEnded() {
+                    
+                    if let winningPlayer = winner() {
+                        
+                        delegate?.playerHasWon(winningPlayer)
+                        
+                    }
+                    
+                }
+                
+                
+                if ai != nil {
+                    
+                    // Game Is Not Pvp
+                    log.info("GAME AI")
+                    
+                    changeCurrentPlayer()
+                    
+                    
+                    
+                    
+                    
+                } else {
+                    
+                    // Game Is PVP
+                    changeCurrentPlayer()
+                    
+                }
+                
+                return
+                
+            }
+            
+            return
+            
+        }
+        
+        // ------ Touch To Set Tile In Insertation State
+        
+        if state == .insert {
+            
+            if !isOccupied(coordinate) {
+                
+                let player = playerToMove
+                
+                addTile(at: coordinate, of: player)
+                
+                if let m = newMorris(for: player) {
+                    
+                    log.info("Morris for player \(player.rawValue)")
+                    
+                    register(morris: m)
+                    
+                    playerCanRemove = player
+                    
+                    if !everyTileInMorris(for: player == .a ? .b : .a) {
+                        
+                        delegate?.playerCanRemove(player: player)
+                        
+                    }
+                    
+                } else {
+                    
+                    if totalTileCounter == GameConfig.numberOfTiles * 2 {
+                        
+                        state = .move
+                        delegate?.changedState(.move)
+                        
+                        log.info("Game State changed to 'MOVING'")
+                        
+                    }
+                    
+                    changeCurrentPlayer()
+                    
+                }
+                
+            } else {
+                
+                log.info("\(playerToMove.rawValue) tried to insert tile at occupied coordinate")
+                
+            }
+            
+        }
+        
+    }
+    
+    public func register(turn: Turn) {
+        
+        // TODO: Morris Checking
+        
+        if state == .move || state == .jump {
+            
+            if let tile = tiles.filter({ $0.coordinate == turn.originCoordinate }).first {
+                
+                log.debug("Logic - Turn: \(turn)")
+                
+                tile.coordinate = turn.destinationCoordinate
+                
+            }
+            
+            turns.append(turn)
+            
+            if let m = newMorris(for: turn.player) {
+                
+                register(morris: m)
+                
+                log.info("Morris for player \(turn.player.rawValue)")
+                
+                playerCanRemove = turn.player
+                
+                if !everyTileInMorris(for: turn.player == .a ? .b : .a) {
+                    
+                    delegate?.playerCanRemove(player: turn.player)
+                    
+                }
+                
+            } else {
+                
+                changeCurrentPlayer()
+                
+            }
+            
+            updateRegisteredMorrisses()
+            
+        }
+        
+    }
+    
+    // --- Helper
     
     private func addTile(at coordinate: Coordinate, of player: Player) {
         
@@ -100,6 +275,50 @@ class Game {
         totalTileCounter += 1
         
         delegate?.place(tile: tile)
+        
+        log.info("Placed tile at \(tile.coordinate)")
+        
+    }
+    
+    private func changeCurrentPlayer() {
+        
+        if playerToMove == .a {
+            playerToMove = .b
+        } else if playerToMove == .b {
+            playerToMove = .a
+        }
+        
+        delegate?.changedMoving(player: playerToMove)
+        
+        log.info("\(playerToMove.rawValue) has a turn")
+        
+    }
+    
+    // ------ Morris
+    
+    private func register(morris: [Morris]) {
+        
+        registeredMorris.append(contentsOf: morris)
+        
+        log.info("Registered \(morris)")
+        
+    }
+    
+    private func updateRegisteredMorrisses() {
+        
+        let cpRegisteredMorris = registeredMorris
+        
+        for morris in cpRegisteredMorris {
+            
+            if !isTile(of: morris.player!, at: morris.firstCoordinate) || !isTile(of: morris.player!, at: morris.secondCoordiante) || !isTile(of: morris.player!, at: morris.thirdCoordinate) {
+                
+                registeredMorris = registeredMorris.filter { $0 != morris }
+                
+            }
+            
+        }
+        
+        log.info("Updated / Removed not existing morrises")
         
     }
     
@@ -126,42 +345,12 @@ class Game {
         }
         
     }
-     
-    private func changeCurrentPlayer() {
-        
-        if playerToMove == .a {
-            playerToMove = .b
-        } else if playerToMove == .b {
-            playerToMove = .a
-        }
-        
-        delegate?.changedMoving(player: playerToMove)
-        
-    }
     
-    // ------ Morris
+    // --- Rules
     
-    private func register(morris: [Morris]) {
-        
-        registeredMorris.append(contentsOf: morris)
-        
-    }
+    var playerATiles: Int { return tiles.filter({ $0.player == Player.a }).count }
     
-    private func updateRegisteredMorrisses() {
-        
-        let cpRegisteredMorris = registeredMorris
-        
-        for morris in cpRegisteredMorris {
-            
-            if !isTile(of: morris.player!, at: morris.firstCoordinate) || !isTile(of: morris.player!, at: morris.secondCoordiante) || !isTile(of: morris.player!, at: morris.thirdCoordinate) {
-                
-                registeredMorris = registeredMorris.filter { $0 != morris }
-                
-            }
-            
-        }
-        
-    }
+    var playerBTiles: Int { return tiles.filter({ $0.player == Player.b }).count }
     
     private func isTile(of player: Player, at coordinate: Coordinate) -> Bool {
         
@@ -237,154 +426,6 @@ class Game {
         
         return allowedTurns(from: coordinate)
         
-    }
-    
-    // Public
-    // --- UI Interaction
-    
-    public func registerTouch(at coordinate: Coordinate) {
-        
-        if let removingPlayer = playerCanRemove {
-            
-            if !isTile(of: removingPlayer, at: coordinate) && !isInMorris(coordinate: coordinate) {
-                
-                playerCanRemove = nil
-                
-                guard let tile = tiles.filter({ $0.coordinate == coordinate }).first else { return }
-                
-                tiles = tiles.filter({ $0.coordinate != coordinate })
-                
-                updateRegisteredMorrisses()
-                
-                delegate?.remove(tile: tile)
-                
-                if playerATiles == 3 && state == .move {
-                    
-                    // TODO: Implement Jumping
-                    
-                    state = .jump
-                    delegate?.changedState(.jump)
-                    
-                } else if playerBTiles == 3 && state == .move {
-                    
-                    state = .jump
-                    delegate?.changedState(.jump)
-                    
-                    // TODO: Implement Jumping
-                    
-                }
-                
-                if gameEnded() {
-                    
-                    if let winningPlayer = winner() {
-                        
-                        delegate?.playerHasWon(winningPlayer)
-                        
-                    }
-                    
-                }
-                
-                changeCurrentPlayer()
-                
-                return
-                
-            }
-            
-            return
-            
-        }
-        
-        if state == .insert {
-            
-            if !isOccupied(coordinate) {
-                
-                let player = playerToMove
-                
-                addTile(at: coordinate, of: player)
-                
-                if let m = newMorris(for: player) {
-                    
-                    register(morris: m)
-                    
-                    log.info("Morris for player \(player.rawValue)")
-                    
-                    playerCanRemove = player
-                    
-                    if !everyTileInMorris(for: player == .a ? .b : .a) {
-                        
-                        delegate?.playerCanRemove(player: player)
-                        
-                    }
-                    
-                } else {
-                    
-                    if totalTileCounter == GameConfig.numberOfTiles * 2 {
-                        
-                        state = .move
-                        delegate?.changedState(.move)
-                        
-                    }
-                    
-                    changeCurrentPlayer()
-                    
-                }
-                
-            }
-            
-        }
-        
-    }
-    
-    public func register(turn: Turn) {
-        
-        // TODO: Morris Checking
-        
-        if state == .move || state == .jump {
-            
-            if let tile = tiles.filter({ $0.coordinate == turn.originCoordinate }).first {
-                
-                log.debug("Logic - Turn: \(turn)")
-                
-                tile.coordinate = turn.destinationCoordinate
-                
-            }
-            
-            turns.append(turn)
-            
-            if let m = newMorris(for: turn.player) {
-                
-                register(morris: m)
-                
-                log.info("Morris for player \(turn.player.rawValue)")
-                
-                playerCanRemove = turn.player
-                
-                if !everyTileInMorris(for: turn.player == .a ? .b : .a) {
-                    
-                    delegate?.playerCanRemove(player: turn.player)
-                    
-                }
-                
-            } else {
-                
-                changeCurrentPlayer()
-                
-            }
-            
-            updateRegisteredMorrisses()
-            
-        }
-        
-    }
-    
-    // --- Rules
-    
-    var playerATiles: Int {
-        return tiles.filter({ $0.player == Player.a }).count
-    }
-    
-    var playerBTiles: Int {
-        return tiles.filter({ $0.player == Player.b }).count
     }
     
     public func isValid(_ coordinate: Coordinate) -> Bool {
@@ -497,6 +538,7 @@ class Game {
     
     public func gameEnded() -> Bool {
         
+        // Check Whether Player Than Fewer Than 3 Tiles
         if totalTileCounter >= 18 && (playerATiles < 3 || playerBTiles < 3) {
             
             return true
@@ -524,6 +566,16 @@ class Game {
         }
         
     }
+    
+    // MARK: - AI
+    
+    public func setAITile() {
+        
+        
+        
+    }
+    
+    // MARK: - Game Debug Templates
     
     public static func midGame(scene: GameScene) -> Game {
     

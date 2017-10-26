@@ -12,5 +12,7 @@ class GameConfig {
     
     static let numberOfTiles = 9
     static let volume: Float = 0.25
+    static let aiPlayer: Player = .b
+    static let humanPlayer: Player = .a
 
 }

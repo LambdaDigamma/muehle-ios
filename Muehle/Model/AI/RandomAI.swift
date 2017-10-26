@@ -12,7 +12,7 @@ class RandomAI: AI {
     
     weak var game: Game!
     
-    private var aiPlayer = Player.b
+    var aiPlayer = Player.b
     
     init(game: Game) {
         

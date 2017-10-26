@@ -347,8 +347,6 @@ class GameScene: SKScene, GameDelegate {
         
         tileSprite.position = center(from: tile.coordinate)
         
-        log.info("Placed tile at \(tile.coordinate)")
-        
     }
     
     private func removeTile(_ tile: Tile) {

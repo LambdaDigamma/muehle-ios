@@ -10,6 +10,8 @@ import Foundation
 
 protocol AI {
     
+    var aiPlayer: Player { get }
+    
     func determineTile() -> Coordinate
     
     func determineTurn() -> Turn
