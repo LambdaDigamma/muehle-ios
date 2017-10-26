@@ -179,38 +179,49 @@ class Game {
             
             if !isOccupied(coordinate) {
                 
+                // Get Player Which has a turn
                 let player = playerToMove
                 
+                // Add Tile To Board (Logic & UI)
                 addTile(at: coordinate, of: player)
                 
-                if let m = newMorris(for: player) {
+                // Check For New Morris
+                if let morris = newMorris(for: player) {
                     
                     log.info("Morris for player \(player.rawValue)")
                     
-                    register(morris: m)
+                    // Register Morris
+                    register(morris: morris)
                     
-                    playerCanRemove = player
-                    
+                    // Player Can Only Remove Tile When Not All Tiles Of The Opponent Are In A Morris
                     if !everyTileInMorris(for: player == .a ? .b : .a) {
                         
+                        // Set Player Which Can Remove A Tile Of The Opponent
+                        playerCanRemove = player
+                        
+                        // Update UI
                         delegate?.playerCanRemove(player: player)
                         
                     }
                     
                 } else {
                     
-                    if totalTileCounter == GameConfig.numberOfTiles * 2 {
-                        
-                        state = .move
-                        delegate?.changedState(.move)
-                        
-                        log.info("Game State changed to 'MOVING'")
-                        
-                    }
-                    
+                    // Opponent Has A Turn
                     changeCurrentPlayer()
                     
                 }
+                
+                // Check Game State
+                if totalTileCounter == GameConfig.numberOfTiles * 2 {
+                    
+                    // Change Game State
+                    state = .move
+                    delegate?.changedState(.move)
+                    
+                    log.info("Game State changed to 'MOVING'")
+                    
+                }
+                
                 
             } else {
                 
