@@ -11,7 +11,7 @@ import UIKit
 class Morris: Equatable, CustomStringConvertible {
     
     var firstCoordinate: Coordinate
-    var secondCoordiante: Coordinate
+    var secondCoordinate: Coordinate
     var thirdCoordinate: Coordinate
     
     var player: Player? = nil
@@ -37,7 +37,7 @@ class Morris: Equatable, CustomStringConvertible {
     init(coordinates: [Coordinate]) {
         
         self.firstCoordinate = coordinates[0]
-        self.secondCoordiante = coordinates[1]
+        self.secondCoordinate = coordinates[1]
         self.thirdCoordinate = coordinates[2]
         
     }
@@ -59,7 +59,7 @@ class Morris: Equatable, CustomStringConvertible {
     }
     
     public var description: String {
-        return "Morris: 1. \(firstCoordinate), 2. \(secondCoordiante), 3. \(thirdCoordinate)"
+        return "Morris: 1. \(firstCoordinate), 2. \(secondCoordinate), 3. \(thirdCoordinate)"
     }
     
 
@@ -67,6 +67,6 @@ class Morris: Equatable, CustomStringConvertible {
 
 func ==(lhs: Morris, rhs: Morris) -> Bool {
     
-    return lhs.firstCoordinate == rhs.firstCoordinate && rhs.secondCoordiante == lhs.secondCoordiante && rhs.thirdCoordinate == lhs.thirdCoordinate
+    return lhs.firstCoordinate == rhs.firstCoordinate && rhs.secondCoordinate == lhs.secondCoordinate && rhs.thirdCoordinate == lhs.thirdCoordinate
     
 }

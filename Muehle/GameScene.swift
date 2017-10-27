@@ -24,16 +24,16 @@ class GameScene: SKScene, GameDelegate {
     public var mode: GameMode = .pvp {
         didSet {
             
-            game.mode = mode
-            
             if mode == .pvp {
 
-                game = Game.midGame(scene: self)
+                setMidGame()
+                
                 game.mode = mode
-                game.delegate = self
-
+                
             } else {
 
+                setMidGame()
+                
                 game.mode = mode
                 
             }
@@ -128,8 +128,6 @@ class GameScene: SKScene, GameDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         
-        // TODO: JUMPING LOL, ADD IF
-        
         // Get Coordinate From Touch Location
         let coordinate = getCoordinate(from: touch)
         
@@ -170,23 +168,19 @@ class GameScene: SKScene, GameDelegate {
             // Validate Start Coordinate
             if let startCoordiante = movingStartCoordinate {
                 
-                if game.tiles.filter ({ $0.player == game.playerToMove }).count <= 3 {
+                if game.playerCanJump(game.playerToMove) {
                     
-                    if game.state == .jump {
+                    // TODO: Implement Jumping
+                    
+                    if game.isValid(coordinate) && !game.isOccupied(coordinate) {
                         
-                        // TODO: Implement Jumping,
+                        // Set New Center
+                        tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
                         
-                        if game.isValid(coordinate) && !game.isOccupied(coordinate) {
-                            
-                            // Set New Center
-                            tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
-                            
-                        } else if startCoordiante == coordinate {
-                            
-                            // Reset Tile To Its Old Coordinate
-                            tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
-                            
-                        }
+                    } else if startCoordiante == coordinate {
+                        
+                        // Reset Tile To Its Old Coordinate
+                        tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
                         
                     }
                     
@@ -231,16 +225,19 @@ class GameScene: SKScene, GameDelegate {
             }
             
             // Check Game State
-            if game.state == .move {
+            if game.state == .move || !game.playerCanJump(game.playerToMove) {
                 
                 // Validate Coordinate And Allowance
                 if game.isValid(coordinate) && !game.isOccupied(coordinate) && game.turnIsAllowed(from: startCoordiante, to: coordinate) {
                     
                     // Set New Center
-                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    guard let tileSprite = tileSprites.filter({ $0.tile.coordinate == startCoordiante }).first else { log.error("Could not load TileSprite"); return }
                     
                     // Register Turn
                     game.register(turn: Turn(player: game.playerToMove, originCoordinate: startCoordiante, destinationCoordinate: coordinate))
+                    
+                    tileSprite.position = center(from: coordinate)
+                    tileSprite.tile.coordinate = coordinate
                     
                 } else if startCoordiante == coordinate {
                     
@@ -249,16 +246,19 @@ class GameScene: SKScene, GameDelegate {
                     
                 }
                 
-            } else if game.state == .jump {
+            } else if game.playerCanJump(game.playerToMove) {
                 
                 // Validate Coordinate And Allowance
                 if game.isValid(coordinate) && !game.isOccupied(coordinate) {
                     
                     // Set New Center
-                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    guard let tileSprite = tileSprites.filter({ $0.tile.coordinate == startCoordiante }).first else { log.error("Could not load TileSprite"); return }
                     
                     // Register Turn
                     game.register(turn: Turn(player: game.playerToMove, originCoordinate: startCoordiante, destinationCoordinate: coordinate))
+                    
+                    tileSprite.position = center(from: coordinate)
+                    tileSprite.tile.coordinate = coordinate
                     
                 } else if startCoordiante == coordinate {
                     
@@ -276,7 +276,7 @@ class GameScene: SKScene, GameDelegate {
         
     }
     
-    // MARK: - Game
+    // MARK: - Game Helper
     
     public func load(game: Game) {
         
@@ -290,6 +290,26 @@ class GameScene: SKScene, GameDelegate {
         }
         
     }
+    
+    public func restart() {
+        
+        game = Game()
+        game.delegate = self
+        
+        for sprite in tileSprites {
+            
+            sprite.removeFromParent()
+            
+        }
+        
+        tileSprites.removeAll()
+        
+        updateCounterLabels()
+        updatePromptLabel(with: "Blue to set")
+        
+    }
+    
+    // --- View / Logic Translators
     
     private func getCoordinate(from touch: UITouch) -> Coordinate {
         
@@ -310,21 +330,6 @@ class GameScene: SKScene, GameDelegate {
         
     }
     
-    public func restart() {
-        
-        game = Game()
-        game.delegate = self
-        
-        for sprite in tileSprites {
-            
-            sprite.removeFromParent()
-            
-        }
-        
-        tileSprites.removeAll()
-        
-    }
-    
     public func validateAndRegisterTouch(at coordinate: Coordinate) {
         
         // Validate Coordinate
@@ -341,13 +346,7 @@ class GameScene: SKScene, GameDelegate {
         
     }
     
-    private func isAIGameAndAIHasTurn() -> Bool {
-        
-        return game.mode != .pvp && game.playerToMove == GameConfig.aiPlayer
-        
-    }
-    
-    // --- UI
+    // MARK: - UI
     
     private func placeTile(_ tile: Tile) {
         
@@ -397,7 +396,34 @@ class GameScene: SKScene, GameDelegate {
     
     private func updatePromptLabel(with text: String) {
         
+        game.plot()
+        
         promptLabel.text = text
+        
+    }
+    
+    // MARK: - Debug Presets
+    
+    private func setMidGame() {
+        
+        game.registerTouch(at: Coordinate(col: 2, row: 2))
+        game.registerTouch(at: Coordinate(col: 6, row: 4))
+        game.registerTouch(at: Coordinate(col: 4, row: 6))
+        game.registerTouch(at: Coordinate(col: 2, row: 6))
+        game.registerTouch(at: Coordinate(col: 7, row: 7))
+        game.registerTouch(at: Coordinate(col: 1, row: 1))
+        game.registerTouch(at: Coordinate(col: 4, row: 1))
+        game.registerTouch(at: Coordinate(col: 6, row: 2))
+        game.registerTouch(at: Coordinate(col: 1, row: 4))
+        game.registerTouch(at: Coordinate(col: 1, row: 7))
+        game.registerTouch(at: Coordinate(col: 3, row: 4))
+        game.registerTouch(at: Coordinate(col: 5, row: 4))
+        game.registerTouch(at: Coordinate(col: 4, row: 3))
+        game.registerTouch(at: Coordinate(col: 7, row: 1))
+        game.registerTouch(at: Coordinate(col: 6, row: 6))
+        game.registerTouch(at: Coordinate(col: 4, row: 7))
+        game.registerTouch(at: Coordinate(col: 3, row: 5))
+        game.registerTouch(at: Coordinate(col: 3, row: 3))
         
     }
     
@@ -419,29 +445,9 @@ class GameScene: SKScene, GameDelegate {
             
             placeTile(tile)
             
-            print("-----------------------------------")
-            print("GAME TILES")
-            
-            game.tiles.forEach({ (tile) in
-                print(tile.coordinate)
-            })
-            
-            print("----------")
-            print("UI TILES")
-            
-            tileSprites.forEach({ (tile) in
-                print(tile.tile.coordinate)
-            })
-            
-            print("-----------------------------------")
-            
             updateCounterLabels()
             
         }
-        
-    }
-    
-    func move(tile: Tile) {
         
     }
     
@@ -477,7 +483,7 @@ class GameScene: SKScene, GameDelegate {
         
         if game.state == .insert {
             
-            if !isAIGameAndAIHasTurn() {
+            if game.isAIGameAndAIHasTurn() {
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
 
@@ -497,7 +503,15 @@ class GameScene: SKScene, GameDelegate {
             
         } else if game.state == .jump {
             
-            updatePromptLabel(with: "\(player.rawValue) to jump")
+            if game.playerCanJump(player) {
+                
+                updatePromptLabel(with: "\(player.rawValue) to jump")
+                
+            } else {
+                
+                updatePromptLabel(with: "\(player.rawValue) to move")
+                
+            }
             
         }
         
@@ -521,7 +535,7 @@ class GameScene: SKScene, GameDelegate {
         
         log.info("\(player.rawValue) has won!")
         
-        if player == .b && game.mode != .pvp {
+        if player == GameConfig.aiPlayer && game.mode != .pvp {
             
             viewController.presentLosingBulletin()
             
@@ -535,25 +549,10 @@ class GameScene: SKScene, GameDelegate {
     
     func moveAITile(turn: Turn) {
         
-//        let point = center(from: turn.destinationCoordinate)
+        // Workaround Because Destination Of Tile Was Already Set Before
+        let point = center(from: turn.destinationCoordinate)
         
-        print("Origin: \(turn.originCoordinate)")
-        
-        print("-------")
-        
-        for tile in tileSprites {
-            
-            print(tile.tile.coordinate)
-            
-        }
-        
-        print("-------")
-        
-        print(tileSprites.filter { $0.tile.coordinate == turn.originCoordinate }.first)
-        
-        tileSprites.filter { $0.tile.coordinate == turn.originCoordinate }.first?.position = center(from: turn.destinationCoordinate)
-        
-//        tileSprites.filter { $0.tile.coordinate == turn.originCoordinate }.first?.run(SKAction.move(by: CGVector(dx: point.x, dy: point.y), duration: 1.5))
+        tileSprites.filter { $0.tile.coordinate == turn.destinationCoordinate }.first?.run(SKAction.move(to: point, duration: 1))
         
     }
     

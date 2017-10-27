@@ -28,6 +28,8 @@ class GameViewController: UIViewController {
         
         rootItem.actionHandler = { item in
             
+            self.dismiss(animated: true, completion: nil)
+            
             self.gameScene.restart()
             
         }
@@ -54,6 +56,7 @@ class GameViewController: UIViewController {
         
         let rootItem = PageBulletinItem(title: "You lost!")
         
+        rootItem.image = #imageLiteral(resourceName: "lose")
         rootItem.interfaceFactory.tintColor = UIColor.red
         rootItem.interfaceFactory.actionButtonTitleColor = .white
         
@@ -61,6 +64,8 @@ class GameViewController: UIViewController {
         rootItem.alternativeButtonTitle = "Not now"
         
         rootItem.actionHandler = { item in
+            
+            self.dismiss(animated: true, completion: nil)
             
             self.gameScene.restart()
             

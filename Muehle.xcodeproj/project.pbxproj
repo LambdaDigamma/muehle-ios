@@ -20,6 +20,7 @@
 		DF38D5141F8E7DE500238650 /* Morris.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF38D5131F8E7DE500238650 /* Morris.swift */; };
 		DF4E9FAD1F9F05210003AA85 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4E9FAC1F9F05210003AA85 /* Extensions.swift */; };
 		DF5FD51C1F94942400B98795 /* ThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5FD51B1F94942400B98795 /* ThemeViewController.swift */; };
+		DF844BDD1FA394E700C2D5C7 /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF844BDC1FA394E700C2D5C7 /* GameTests.swift */; };
 		DFB5D0801F936A7A0032FCF2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB5D07F1F936A7A0032FCF2 /* MenuViewController.swift */; };
 		DFC1103F1F855DAD00ED5AF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC1103E1F855DAD00ED5AF2 /* AppDelegate.swift */; };
 		DFC110411F855DAD00ED5AF2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DFC110401F855DAD00ED5AF2 /* GameScene.sks */; };
@@ -51,6 +52,16 @@
 		DFFCFF2A1F9BE8F900FF530F /* RandomAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFCFF291F9BE8F900FF530F /* RandomAI.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		DF844BD71FA3930900C2D5C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DFC110331F855DAD00ED5AF2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DFC1103A1F855DAD00ED5AF2;
+			remoteInfo = Muehle;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		DF2316D11F96808700E8ACC3 /* GameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMode.swift; sourceTree = "<group>"; };
 		DF2316D31F9693D700E8ACC3 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -65,6 +76,9 @@
 		DF38D5131F8E7DE500238650 /* Morris.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Morris.swift; sourceTree = "<group>"; };
 		DF4E9FAC1F9F05210003AA85 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		DF5FD51B1F94942400B98795 /* ThemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeViewController.swift; sourceTree = "<group>"; };
+		DF844BD21FA3930900C2D5C7 /* MuehleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuehleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF844BD61FA3930900C2D5C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DF844BDC1FA394E700C2D5C7 /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
 		DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletinBoard.framework; path = Carthage/Build/iOS/BulletinBoard.framework; sourceTree = "<group>"; };
 		DFB5D07F1F936A7A0032FCF2 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		DFB5D0811F9394730032FCF2 /* SwiftyButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyButton.framework; path = Carthage/Build/iOS/SwiftyButton.framework; sourceTree = "<group>"; };
@@ -100,6 +114,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		DF844BCF1FA3930900C2D5C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DFC110381F855DAD00ED5AF2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -132,10 +153,20 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
+		DF844BD31FA3930900C2D5C7 /* MuehleTests */ = {
+			isa = PBXGroup;
+			children = (
+				DF844BD61FA3930900C2D5C7 /* Info.plist */,
+				DF844BDC1FA394E700C2D5C7 /* GameTests.swift */,
+			);
+			path = MuehleTests;
+			sourceTree = "<group>";
+		};
 		DFC110321F855DAD00ED5AF2 = {
 			isa = PBXGroup;
 			children = (
 				DFC1103D1F855DAD00ED5AF2 /* Muehle */,
+				DF844BD31FA3930900C2D5C7 /* MuehleTests */,
 				DFC1103C1F855DAD00ED5AF2 /* Products */,
 				DFC1106F1F87CFD900ED5AF2 /* Frameworks */,
 			);
@@ -145,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				DFC1103B1F855DAD00ED5AF2 /* Muehle.app */,
+				DF844BD21FA3930900C2D5C7 /* MuehleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -231,6 +263,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		DF844BD11FA3930900C2D5C7 /* MuehleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DF844BDB1FA3930900C2D5C7 /* Build configuration list for PBXNativeTarget "MuehleTests" */;
+			buildPhases = (
+				DF844BCE1FA3930900C2D5C7 /* Sources */,
+				DF844BCF1FA3930900C2D5C7 /* Frameworks */,
+				DF844BD01FA3930900C2D5C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DF844BD81FA3930900C2D5C7 /* PBXTargetDependency */,
+			);
+			name = MuehleTests;
+			productName = MuehleTests;
+			productReference = DF844BD21FA3930900C2D5C7 /* MuehleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		DFC1103A1F855DAD00ED5AF2 /* Muehle */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DFC110531F855DAD00ED5AF2 /* Build configuration list for PBXNativeTarget "Muehle" */;
@@ -259,6 +309,12 @@
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "Lennart Fischer";
 				TargetAttributes = {
+					DF844BD11FA3930900C2D5C7 = {
+						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 0910;
+						ProvisioningStyle = Automatic;
+						TestTargetID = DFC1103A1F855DAD00ED5AF2;
+					};
 					DFC1103A1F855DAD00ED5AF2 = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
@@ -279,11 +335,19 @@
 			projectRoot = "";
 			targets = (
 				DFC1103A1F855DAD00ED5AF2 /* Muehle */,
+				DF844BD11FA3930900C2D5C7 /* MuehleTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		DF844BD01FA3930900C2D5C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DFC110391F855DAD00ED5AF2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -321,6 +385,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		DF844BCE1FA3930900C2D5C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF844BDD1FA394E700C2D5C7 /* GameTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DFC110371F855DAD00ED5AF2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -361,6 +433,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		DF844BD81FA3930900C2D5C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DFC1103A1F855DAD00ED5AF2 /* Muehle */;
+			targetProxy = DF844BD71FA3930900C2D5C7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		DFC110481F855DAD00ED5AF2 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -381,6 +461,41 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		DF844BD91FA3930900C2D5C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TX3HU8833D;
+				INFOPLIST_FILE = MuehleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lambdadigamma.MuehleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Muehle.app/Muehle";
+			};
+			name = Debug;
+		};
+		DF844BDA1FA3930900C2D5C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TX3HU8833D;
+				INFOPLIST_FILE = MuehleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lambdadigamma.MuehleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Muehle.app/Muehle";
+			};
+			name = Release;
+		};
 		DFC110511F855DAD00ED5AF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -531,6 +646,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DF844BDB1FA3930900C2D5C7 /* Build configuration list for PBXNativeTarget "MuehleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DF844BD91FA3930900C2D5C7 /* Debug */,
+				DF844BDA1FA3930900C2D5C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		DFC110361F855DAD00ED5AF2 /* Build configuration list for PBXProject "Muehle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

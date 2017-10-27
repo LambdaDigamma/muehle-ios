@@ -42,8 +42,6 @@ class RandomAI: AI {
         
         var allPossibleTurns: [Turn] = []
         
-//        print(game.tiles.filter({ $0.player == aiPlayer }))
-        
         for tile in game.tiles.filter({ $0.player == aiPlayer }) {
             
             for destination in game.allowedTurns(from: tile.coordinate) {
@@ -58,7 +56,25 @@ class RandomAI: AI {
             
         }
         
-        print(allPossibleTurns)
+        let index = allPossibleTurns.count.random()
+        
+        return allPossibleTurns[index]
+        
+    }
+    
+    func determineJumpTurn() -> Turn {
+        
+        var allPossibleTurns: [Turn] = []
+        
+        for tile in game.tiles.filter({ $0.player == aiPlayer }) {
+            
+            for destination in game.allCoordinates().filter({ !game.isOccupied($0) && tile.coordinate != $0 }) {
+                
+                allPossibleTurns.append(Turn(player: aiPlayer, originCoordinate: tile.coordinate, destinationCoordinate: destination))
+                
+            }
+            
+        }
         
         let index = allPossibleTurns.count.random()
         

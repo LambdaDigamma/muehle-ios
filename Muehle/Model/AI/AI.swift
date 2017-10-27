@@ -16,6 +16,8 @@ protocol AI {
     
     func determineTurn() -> Turn
     
+    func determineJumpTurn() -> Turn
+    
     func determineRemovingCoordinate() -> Coordinate
     
 }
