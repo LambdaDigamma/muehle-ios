@@ -18,10 +18,8 @@
 		DF2935EB1F955AA400DEBD4B /* SKTAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2935EA1F955AA300DEBD4B /* SKTAudio.swift */; };
 		DF2935EE1F955BC300DEBD4B /* Normal Theme.wav in Resources */ = {isa = PBXBuildFile; fileRef = DF2935ED1F955BC200DEBD4B /* Normal Theme.wav */; };
 		DF38D5141F8E7DE500238650 /* Morris.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF38D5131F8E7DE500238650 /* Morris.swift */; };
-		DF42C9321F939E6B000AF77E /* SwiftyButton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFB5D0811F9394730032FCF2 /* SwiftyButton.framework */; };
 		DF4E9FAD1F9F05210003AA85 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4E9FAC1F9F05210003AA85 /* Extensions.swift */; };
 		DF5FD51C1F94942400B98795 /* ThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5FD51B1F94942400B98795 /* ThemeViewController.swift */; };
-		DFA201261F9BFE7C00EC98F6 /* BulletinBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */; };
 		DFB5D0801F936A7A0032FCF2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB5D07F1F936A7A0032FCF2 /* MenuViewController.swift */; };
 		DFC1103F1F855DAD00ED5AF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC1103E1F855DAD00ED5AF2 /* AppDelegate.swift */; };
 		DFC110411F855DAD00ED5AF2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DFC110401F855DAD00ED5AF2 /* GameScene.sks */; };
@@ -42,8 +40,10 @@
 		DFC1106B1F855E1000ED5AF2 /* Difficulty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC110611F855E1000ED5AF2 /* Difficulty.swift */; };
 		DFC1106C1F855E1000ED5AF2 /* Turn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC110621F855E1000ED5AF2 /* Turn.swift */; };
 		DFC1106E1F85778A00ED5AF2 /* Tiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = DFC1106D1F85778A00ED5AF2 /* Tiles.sks */; };
-		DFC110711F87CFD900ED5AF2 /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFC110701F87CFD900ED5AF2 /* Log.framework */; };
-		DFDEC3971F9A8EFD00A2381E /* CollectionViewShelfLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFDEC3961F9A8EFD00A2381E /* CollectionViewShelfLayout.framework */; };
+		DFD1ACBA1FA2512B000898D4 /* BulletinBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */; };
+		DFD1ACBB1FA2512B000898D4 /* CollectionViewShelfLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFDEC3961F9A8EFD00A2381E /* CollectionViewShelfLayout.framework */; };
+		DFD1ACBC1FA2512B000898D4 /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFC110701F87CFD900ED5AF2 /* Log.framework */; };
+		DFD1ACBE1FA33638000898D4 /* ARGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD1ACBD1FA33638000898D4 /* ARGameViewController.swift */; };
 		DFDEC3991F9A8FDE00A2381E /* ThemeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDEC3981F9A8FDE00A2381E /* ThemeCollectionViewCell.swift */; };
 		DFDEC39B1F9B429F00A2381E /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDEC39A1F9B429F00A2381E /* CustomButton.swift */; };
 		DFF4323E1F8982BB002EE8A0 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF4323D1F8982BB002EE8A0 /* TileNode.swift */; };
@@ -90,6 +90,7 @@
 		DFC110621F855E1000ED5AF2 /* Turn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Turn.swift; sourceTree = "<group>"; };
 		DFC1106D1F85778A00ED5AF2 /* Tiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Tiles.sks; sourceTree = "<group>"; };
 		DFC110701F87CFD900ED5AF2 /* Log.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log.framework; path = Carthage/Build/iOS/Log.framework; sourceTree = "<group>"; };
+		DFD1ACBD1FA33638000898D4 /* ARGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameViewController.swift; sourceTree = "<group>"; };
 		DFDEC3961F9A8EFD00A2381E /* CollectionViewShelfLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CollectionViewShelfLayout.framework; path = Carthage/Build/iOS/CollectionViewShelfLayout.framework; sourceTree = "<group>"; };
 		DFDEC3981F9A8FDE00A2381E /* ThemeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCollectionViewCell.swift; sourceTree = "<group>"; };
 		DFDEC39A1F9B429F00A2381E /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
@@ -103,10 +104,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DFA201261F9BFE7C00EC98F6 /* BulletinBoard.framework in Frameworks */,
-				DFC110711F87CFD900ED5AF2 /* Log.framework in Frameworks */,
-				DF42C9321F939E6B000AF77E /* SwiftyButton.framework in Frameworks */,
-				DFDEC3971F9A8EFD00A2381E /* CollectionViewShelfLayout.framework in Frameworks */,
+				DFD1ACBA1FA2512B000898D4 /* BulletinBoard.framework in Frameworks */,
+				DFD1ACBB1FA2512B000898D4 /* CollectionViewShelfLayout.framework in Frameworks */,
+				DFD1ACBC1FA2512B000898D4 /* Log.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,6 +212,7 @@
 				DF2316D71F96A03E00E8ACC3 /* SettingsViewController.swift */,
 				DF2316D91F96A0D400E8ACC3 /* ShopViewController.swift */,
 				DF2316DB1F96A18500E8ACC3 /* InfoViewController.swift */,
+				DFD1ACBD1FA33638000898D4 /* ARGameViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -308,7 +309,6 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Log.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftyButton.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/CollectionViewShelfLayout.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/BulletinBoard.framework",
 			);
@@ -353,6 +353,7 @@
 				DF4E9FAD1F9F05210003AA85 /* Extensions.swift in Sources */,
 				DFFCFF281F9BD3E700FF530F /* AIStrategy.swift in Sources */,
 				DF2316DA1F96A0D400E8ACC3 /* ShopViewController.swift in Sources */,
+				DFD1ACBE1FA33638000898D4 /* ARGameViewController.swift in Sources */,
 				DF2316DC1F96A18500E8ACC3 /* InfoViewController.swift in Sources */,
 				DFC110691F855E1000ED5AF2 /* Coordinate.swift in Sources */,
 			);
@@ -498,6 +499,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Muehle/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lambdadigamma.Muehle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -517,6 +519,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Muehle/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lambdadigamma.Muehle;
 				PRODUCT_NAME = "$(TARGET_NAME)";

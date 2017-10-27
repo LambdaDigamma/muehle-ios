@@ -15,10 +15,30 @@ class GameScene: SKScene, GameDelegate {
     
     // MARK: - Properties
     
-    public var game = Game()
+    public var game: Game = Game()
     
     public weak var viewController: GameViewController! {
         didSet { customize(theme: theme) }
+    }
+    
+    public var mode: GameMode = .pvp {
+        didSet {
+            
+            game.mode = mode
+            
+            if mode == .pvp {
+
+                game = Game.midGame(scene: self)
+                game.mode = mode
+                game.delegate = self
+
+            } else {
+
+                game.mode = mode
+                
+            }
+            
+        }
     }
     
     private let log = Logger()
@@ -61,9 +81,7 @@ class GameScene: SKScene, GameDelegate {
         // Bring Board To Top
         self.board.zPosition = 50
         
-        // Set Game Delegate
-        self.game = Game.midGame(scene: self)
-        self.game.delegate = self
+        game.delegate = self
         
         // Start Background Music For Theme
         startBackgroundMusic()
@@ -323,6 +341,12 @@ class GameScene: SKScene, GameDelegate {
         
     }
     
+    private func isAIGameAndAIHasTurn() -> Bool {
+        
+        return game.mode != .pvp && game.playerToMove == GameConfig.aiPlayer
+        
+    }
+    
     // --- UI
     
     private func placeTile(_ tile: Tile) {
@@ -381,23 +405,65 @@ class GameScene: SKScene, GameDelegate {
     
     func place(tile: Tile) {
         
-        placeTile(tile)
-        
-        updateCounterLabels()
+        if game.mode != .pvp && tile.player == GameConfig.aiPlayer {
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                
+                self.placeTile(tile)
+                
+                self.updateCounterLabels()
+                
+            })
+            
+        } else {
+            
+            placeTile(tile)
+            
+            print("-----------------------------------")
+            print("GAME TILES")
+            
+            game.tiles.forEach({ (tile) in
+                print(tile.coordinate)
+            })
+            
+            print("----------")
+            print("UI TILES")
+            
+            tileSprites.forEach({ (tile) in
+                print(tile.tile.coordinate)
+            })
+            
+            print("-----------------------------------")
+            
+            updateCounterLabels()
+            
+        }
         
     }
     
     func move(tile: Tile) {
         
-        
-        
     }
     
     func remove(tile: Tile) {
         
-        removeTile(tile)
-        
-        updateCounterLabels()
+        if game.mode != .pvp && tile.player == GameConfig.aiPlayer {
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                
+                self.removeTile(tile)
+                
+                self.updateCounterLabels()
+                
+            })
+            
+        } else {
+            
+            removeTile(tile)
+            
+            updateCounterLabels()
+            
+        }
         
     }
     
@@ -411,7 +477,19 @@ class GameScene: SKScene, GameDelegate {
         
         if game.state == .insert {
             
-            updatePromptLabel(with: "\(player.rawValue) to set")
+            if !isAIGameAndAIHasTurn() {
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+
+                    self.updatePromptLabel(with: "\(player.rawValue) to set")
+
+                })
+
+            } else {
+            
+                updatePromptLabel(with: "\(player.rawValue) to set")
+                
+            }
             
         } else if game.state == .move {
             
@@ -452,6 +530,30 @@ class GameScene: SKScene, GameDelegate {
             viewController.presentWinningBulletin(for: player, withMode: game.mode)
             
         }
+        
+    }
+    
+    func moveAITile(turn: Turn) {
+        
+//        let point = center(from: turn.destinationCoordinate)
+        
+        print("Origin: \(turn.originCoordinate)")
+        
+        print("-------")
+        
+        for tile in tileSprites {
+            
+            print(tile.tile.coordinate)
+            
+        }
+        
+        print("-------")
+        
+        print(tileSprites.filter { $0.tile.coordinate == turn.originCoordinate }.first)
+        
+        tileSprites.filter { $0.tile.coordinate == turn.originCoordinate }.first?.position = center(from: turn.destinationCoordinate)
+        
+//        tileSprites.filter { $0.tile.coordinate == turn.originCoordinate }.first?.run(SKAction.move(by: CGVector(dx: point.x, dy: point.y), duration: 1.5))
         
     }
     

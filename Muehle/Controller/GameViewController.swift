@@ -105,7 +105,11 @@ class GameViewController: UIViewController {
                 
                 sceneNode.viewController = self
                 
-                sceneNode.game.mode = mode
+                print(mode)
+                
+                sceneNode.mode = mode
+                
+//                sceneNode.game = Game(mode: mode)
                 
                 sceneNode.backgroundColor = UIColor.white
                 

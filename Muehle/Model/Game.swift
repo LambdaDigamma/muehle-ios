@@ -25,6 +25,8 @@ protocol GameDelegate {
     
     func playerHasWon(_ player: Player)
     
+    func moveAITile(turn: Turn)
+    
 }
 
 class Game {
@@ -33,8 +35,10 @@ class Game {
     
     public var delegate: GameDelegate? = nil
     public var state: State = .insert
-    public var playerToMove: Player = .a
     public var ai: AI? = nil
+    
+    public var playerToMove: Player = .a
+    
     public var mode: GameMode = .pvp {
         didSet {
             switch mode {
@@ -110,29 +114,14 @@ class Game {
             
             if !isTile(of: removingPlayer, at: coordinate) && !isInMorris(coordinate: coordinate) {
                 
-                playerCanRemove = nil
+                removeTile(at: coordinate)
                 
-                guard let tile = tiles.filter({ $0.coordinate == coordinate }).first else { return }
-                
-                tiles = tiles.filter({ $0.coordinate != coordinate })
-                
-                updateRegisteredMorrisses()
-                
-                delegate?.remove(tile: tile)
-                
-                if playerATiles == 3 && state == .move {
+                if (playerATiles == 3 || playerBTiles == 3) && state == .move {
                     
                     // TODO: Implement Jumping
                     
                     state = .jump
                     delegate?.changedState(.jump)
-                    
-                } else if playerBTiles == 3 && state == .move {
-                    
-                    state = .jump
-                    delegate?.changedState(.jump)
-                    
-                    // TODO: Implement Jumping
                     
                 }
                 
@@ -146,24 +135,7 @@ class Game {
                     
                 }
                 
-                
-                if ai != nil {
-                    
-                    // Game Is Not Pvp
-                    log.info("GAME AI")
-                    
-                    changeCurrentPlayer()
-                    
-                    
-                    
-                    
-                    
-                } else {
-                    
-                    // Game Is PVP
-                    changeCurrentPlayer()
-                    
-                }
+                changeCurrentPlayer()
                 
                 return
                 
@@ -179,49 +151,8 @@ class Game {
             
             if !isOccupied(coordinate) {
                 
-                // Get Player Which has a turn
-                let player = playerToMove
-                
-                // Add Tile To Board (Logic & UI)
-                addTile(at: coordinate, of: player)
-                
-                // Check For New Morris
-                if let morris = newMorris(for: player) {
-                    
-                    log.info("Morris for player \(player.rawValue)")
-                    
-                    // Register Morris
-                    register(morris: morris)
-                    
-                    // Player Can Only Remove Tile When Not All Tiles Of The Opponent Are In A Morris
-                    if !everyTileInMorris(for: player == .a ? .b : .a) {
-                        
-                        // Set Player Which Can Remove A Tile Of The Opponent
-                        playerCanRemove = player
-                        
-                        // Update UI
-                        delegate?.playerCanRemove(player: player)
-                        
-                    }
-                    
-                } else {
-                    
-                    // Opponent Has A Turn
-                    changeCurrentPlayer()
-                    
-                }
-                
-                // Check Game State
-                if totalTileCounter == GameConfig.numberOfTiles * 2 {
-                    
-                    // Change Game State
-                    state = .move
-                    delegate?.changedState(.move)
-                    
-                    log.info("Game State changed to 'MOVING'")
-                    
-                }
-                
+                // Add Tile And Check For Morris Of Player Which Has A Turn
+                addTileAndCheckMorris(at: coordinate, of: playerToMove)
                 
             } else {
                 
@@ -239,43 +170,57 @@ class Game {
         
         if state == .move || state == .jump {
             
-            if let tile = tiles.filter({ $0.coordinate == turn.originCoordinate }).first {
-                
-                log.debug("Logic - Turn: \(turn)")
-                
-                tile.coordinate = turn.destinationCoordinate
-                
-            }
-            
-            turns.append(turn)
-            
-            if let m = newMorris(for: turn.player) {
-                
-                register(morris: m)
-                
-                log.info("Morris for player \(turn.player.rawValue)")
-                
-                playerCanRemove = turn.player
-                
-                if !everyTileInMorris(for: turn.player == .a ? .b : .a) {
-                    
-                    delegate?.playerCanRemove(player: turn.player)
-                    
-                }
-                
-            } else {
-                
-                changeCurrentPlayer()
-                
-            }
-            
-            updateRegisteredMorrisses()
+            executeTurnAndCheckMorris(turn)
             
         }
         
     }
     
     // --- Helper
+    
+    private func addTileAndCheckMorris(at coordinate: Coordinate, of player: Player) {
+        
+        // Add Tile To Board (Logic & UI)
+        addTile(at: coordinate, of: player)
+        
+        // Check Game State
+        if totalTileCounter == GameConfig.numberOfTiles * 2 {
+            
+            // Change Game State
+            state = .move
+            delegate?.changedState(.move)
+            
+            log.info("Game State changed to 'MOVING'")
+            
+        }
+        
+        // Check For New Morris
+        if let morris = newMorris(for: player) {
+            
+            log.info("Morris for player \(player.rawValue)")
+            
+            // Register Morris
+            register(morris: morris)
+            
+            // Player Can Only Remove Tile When Not All Tiles Of The Opponent Are In A Morris
+            if !everyTileInMorris(for: player == .a ? .b : .a) {
+                
+                // Set Player Which Can Remove A Tile Of The Opponent
+                playerCanRemove = player
+                
+                // Update UI
+                delegate?.playerCanRemove(player: player)
+                
+            }
+            
+        } else {
+            
+            // Opponent Has A Turn
+            changeCurrentPlayer()
+            
+        }
+        
+    }
     
     private func addTile(at coordinate: Coordinate, of player: Player) {
         
@@ -291,6 +236,56 @@ class Game {
         
     }
     
+    private func removeTile(at coordinate: Coordinate) {
+        
+        playerCanRemove = nil
+        
+        guard let tile = tiles.filter({ $0.coordinate == coordinate }).first else { return }
+        
+        tiles = tiles.filter({ $0.coordinate != coordinate })
+        
+        updateRegisteredMorrisses()
+        
+        delegate?.remove(tile: tile)
+        
+    }
+    
+    private func executeTurnAndCheckMorris(_ turn: Turn) {
+        
+        if let tile = tiles.filter({ $0.coordinate == turn.originCoordinate }).first {
+            
+            log.info("Logic - Turn: \(turn)")
+            
+            tile.coordinate = turn.destinationCoordinate
+            
+        }
+        
+        turns.append(turn)
+        
+        if let m = newMorris(for: turn.player) {
+            
+            register(morris: m)
+            
+            log.info("Morris for player \(turn.player.rawValue)")
+            
+            playerCanRemove = turn.player
+            
+            if !everyTileInMorris(for: turn.player == .a ? .b : .a) {
+                
+                delegate?.playerCanRemove(player: turn.player)
+                
+            }
+            
+        } else {
+            
+            changeCurrentPlayer()
+            
+        }
+        
+        updateRegisteredMorrisses()
+        
+    }
+    
     private func changeCurrentPlayer() {
         
         if playerToMove == .a {
@@ -302,6 +297,32 @@ class Game {
         delegate?.changedMoving(player: playerToMove)
         
         log.info("\(playerToMove.rawValue) has a turn")
+        
+        if mode != .pvp && playerToMove == GameConfig.aiPlayer {
+            
+            if state == .insert {
+                
+                setAITile()
+                
+            } else if state == .move {
+                
+                moveAITile()
+                
+            } else if state == .jump {
+                
+                if tiles.filter ({ $0.player == playerToMove }).count <= 3 {
+                    
+                    jumpAITile()
+                    
+                } else {
+                    
+                    moveAITile()
+                    
+                }
+                
+            }
+            
+        }
         
     }
     
@@ -359,9 +380,9 @@ class Game {
     
     // --- Rules
     
-    var playerATiles: Int { return tiles.filter({ $0.player == Player.a }).count }
+    private var playerATiles: Int { return tiles.filter({ $0.player == Player.a }).count }
     
-    var playerBTiles: Int { return tiles.filter({ $0.player == Player.b }).count }
+    private var playerBTiles: Int { return tiles.filter({ $0.player == Player.b }).count }
     
     private func isTile(of player: Player, at coordinate: Coordinate) -> Bool {
         
@@ -509,8 +530,6 @@ class Game {
     
     public func turnIsAllowed(from coordinate: Coordinate, to destinationCoordinate: Coordinate) -> Bool {
         
-        print("turn is allowed: \(validCoordinates(from: coordinate).contains(destinationCoordinate))")
-        
         return validCoordinates(from: coordinate).contains(destinationCoordinate)
         
     }
@@ -582,7 +601,55 @@ class Game {
     
     public func setAITile() {
         
+        guard let ai = ai else { log.error("AI could not be loaded!"); return }
         
+        let coordinate = ai.determineTile()
+        
+        addTileAndCheckMorris(at: coordinate, of: ai.aiPlayer)
+        
+        if playerCanRemove != nil {
+            
+            deleteAIOpponentTile()
+            
+        }
+        
+    }
+    
+    public func moveAITile() {
+        
+        guard let ai = ai else { log.error("AI could not be loaded!"); return }
+        
+        let turn = ai.determineTurn()
+        
+        log.info("AI \(turn)")
+        
+        executeTurnAndCheckMorris(turn)
+        
+        delegate?.moveAITile(turn: turn)
+        
+        if playerCanRemove != nil {
+            
+            deleteAIOpponentTile()
+            
+        }
+        
+    }
+    
+    public func jumpAITile() {
+        
+        
+        
+    }
+    
+    public func deleteAIOpponentTile() {
+        
+        guard let ai = ai else { log.error("AI could not be loaded!"); return }
+        
+        let coordinate = ai.determineRemovingCoordinate()
+        
+        removeTile(at: coordinate)
+        
+        changeCurrentPlayer()
         
     }
     
@@ -593,23 +660,68 @@ class Game {
         let game = Game()
         game.delegate = scene
         
-        game.registerTouch(at: Coordinate(col: 1, row: 1))
-        game.registerTouch(at: Coordinate(col: 4, row: 1))
-        game.registerTouch(at: Coordinate(col: 7, row: 1))
         game.registerTouch(at: Coordinate(col: 2, row: 2))
         game.registerTouch(at: Coordinate(col: 6, row: 4))
-        game.registerTouch(at: Coordinate(col: 6, row: 2))
-        game.registerTouch(at: Coordinate(col: 2, row: 4))
-        game.registerTouch(at: Coordinate(col: 1, row: 7))
-        game.registerTouch(at: Coordinate(col: 3, row: 5))
-        game.registerTouch(at: Coordinate(col: 7, row: 7))
-        game.registerTouch(at: Coordinate(col: 4, row: 7))
-        game.registerTouch(at: Coordinate(col: 5, row: 5))
-        game.registerTouch(at: Coordinate(col: 7, row: 4))
-        game.registerTouch(at: Coordinate(col: 5, row: 3))
-        game.registerTouch(at: Coordinate(col: 3, row: 3))
         game.registerTouch(at: Coordinate(col: 4, row: 6))
+        game.registerTouch(at: Coordinate(col: 2, row: 6))
+        game.registerTouch(at: Coordinate(col: 7, row: 7))
+        game.registerTouch(at: Coordinate(col: 1, row: 1))
+        game.registerTouch(at: Coordinate(col: 4, row: 1))
+        game.registerTouch(at: Coordinate(col: 6, row: 2))
+        game.registerTouch(at: Coordinate(col: 1, row: 4))
+        game.registerTouch(at: Coordinate(col: 1, row: 7))
+        game.registerTouch(at: Coordinate(col: 3, row: 4))
+        game.registerTouch(at: Coordinate(col: 5, row: 4))
+        game.registerTouch(at: Coordinate(col: 4, row: 3))
+        game.registerTouch(at: Coordinate(col: 7, row: 1))
         game.registerTouch(at: Coordinate(col: 6, row: 6))
+        game.registerTouch(at: Coordinate(col: 4, row: 7))
+        game.registerTouch(at: Coordinate(col: 3, row: 5))
+        game.registerTouch(at: Coordinate(col: 3, row: 3))
+        
+        
+        
+        
+        
+        
+        
+//        game.registerTouch(at: Coordinate(col: 1, row: 1))
+//        game.registerTouch(at: Coordinate(col: 4, row: 1))
+//        game.registerTouch(at: Coordinate(col: 7, row: 1))
+//        game.registerTouch(at: Coordinate(col: 2, row: 2))
+//        game.registerTouch(at: Coordinate(col: 6, row: 4))
+//        game.registerTouch(at: Coordinate(col: 6, row: 2))
+//        game.registerTouch(at: Coordinate(col: 2, row: 4))
+//        game.registerTouch(at: Coordinate(col: 1, row: 7))
+//        game.registerTouch(at: Coordinate(col: 3, row: 5))
+//        game.registerTouch(at: Coordinate(col: 7, row: 7))
+//        game.registerTouch(at: Coordinate(col: 4, row: 7))
+//        game.registerTouch(at: Coordinate(col: 5, row: 5))
+//        game.registerTouch(at: Coordinate(col: 7, row: 4))
+//        game.registerTouch(at: Coordinate(col: 5, row: 3))
+//        game.registerTouch(at: Coordinate(col: 3, row: 3))
+//        game.registerTouch(at: Coordinate(col: 4, row: 6))
+//        game.registerTouch(at: Coordinate(col: 6, row: 6))
+//        game.registerTouch(at: Coordinate(col: 2, row: 6))
+        
+//        Coordinate: (1|1) √
+//        Coordinate: (4|1) √
+//        Coordinate: (7|1) √
+//        Coordinate: (2|2) √
+//        Coordinate: (6|4) √
+//        Coordinate: (4|2)
+//        Coordinate: (1|4)
+//        Coordinate: (1|7) √
+//        Coordinate: (3|5) √
+//        Coordinate: (7|7) √
+//        Coordinate: (4|7) √
+//        Coordinate: (5|5) √
+//        Coordinate: (7|4) √
+//        Coordinate: (5|3) √
+//        Coordinate: (3|3) √
+//        Coordinate: (4|6) √
+//        Coordinate: (6|6) √
+//        Coordinate: (2|6) √
         
         return game
     

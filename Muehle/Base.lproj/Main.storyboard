@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13526" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tV3-Qs-XZN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tV3-Qs-XZN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -62,6 +62,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vfk-lK-cPK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-972" y="107"/>
+        </scene>
+        <!--Game View Controller-->
+        <scene sceneID="HCL-Fg-Igd">
+            <objects>
+                <viewController id="iby-0p-oNk" customClass="ARGameViewController" customModule="Muehle" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="f52-Ls-Z3N">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddk-8x-004">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </arscnView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ddk-8x-004" firstAttribute="trailing" secondItem="37L-Bn-gXn" secondAttribute="trailing" id="9rg-JQ-YNL"/>
+                            <constraint firstItem="ddk-8x-004" firstAttribute="top" secondItem="f52-Ls-Z3N" secondAttribute="top" id="DYL-uk-h2C"/>
+                            <constraint firstItem="ddk-8x-004" firstAttribute="bottom" secondItem="37L-Bn-gXn" secondAttribute="bottom" id="E34-i1-xo3"/>
+                            <constraint firstItem="ddk-8x-004" firstAttribute="leading" secondItem="37L-Bn-gXn" secondAttribute="leading" id="Qld-Y1-TDY"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="37L-Bn-gXn"/>
+                    </view>
+                    <connections>
+                        <outlet property="sceneView" destination="ddk-8x-004" id="nHW-rI-5LJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bcY-Bq-PVh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="-1392.953523238381"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="gqq-ie-gxM">
@@ -191,6 +220,14 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="BV1-FR-VrT" kind="show" identifier="pvp" id="13T-Ys-wbb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xt4-n9-n3e">
+                                <rect key="frame" x="172" y="126" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="AR"/>
+                                <connections>
+                                    <segue destination="iby-0p-oNk" kind="show" id="do6-iw-2Z6"/>
                                 </connections>
                             </button>
                         </subviews>

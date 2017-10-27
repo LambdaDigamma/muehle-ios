@@ -12,7 +12,7 @@ class RandomAI: AI {
     
     weak var game: Game!
     
-    var aiPlayer = Player.b
+    var aiPlayer = GameConfig.aiPlayer
     
     init(game: Game) {
         
@@ -42,15 +42,23 @@ class RandomAI: AI {
         
         var allPossibleTurns: [Turn] = []
         
+//        print(game.tiles.filter({ $0.player == aiPlayer }))
+        
         for tile in game.tiles.filter({ $0.player == aiPlayer }) {
             
             for destination in game.allowedTurns(from: tile.coordinate) {
                 
-                allPossibleTurns.append(Turn(player: aiPlayer, originCoordinate: tile.coordinate, destinationCoordinate: destination))
+                if !game.isOccupied(destination) {
+                    
+                    allPossibleTurns.append(Turn(player: aiPlayer, originCoordinate: tile.coordinate, destinationCoordinate: destination))
+                    
+                }
                 
             }
             
         }
+        
+        print(allPossibleTurns)
         
         let index = allPossibleTurns.count.random()
         
