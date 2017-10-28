@@ -12,10 +12,20 @@ import GameplayKit
 
 class MenuViewController: UIViewController {
 
+    @IBOutlet weak var shopButton: UIButton!
+    @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var themeButton: UIButton!
+    @IBOutlet weak var infoButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.white
+        
+        shopButton.imageView?.contentMode = .scaleAspectFit
+        settingsButton.imageView?.contentMode = .scaleAspectFit
+        themeButton.imageView?.contentMode = .scaleAspectFit
+        infoButton.imageView?.contentMode = .scaleAspectFit
         
     }
     

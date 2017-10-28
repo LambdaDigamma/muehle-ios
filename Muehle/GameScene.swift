@@ -30,9 +30,13 @@ class GameScene: SKScene, GameDelegate {
                 
                 game.mode = mode
                 
-            } else {
+            } else if mode == .pveMedium {
 
                 setMidGame()
+                
+                game.mode = mode
+                
+            } else {
                 
                 game.mode = mode
                 
@@ -214,6 +218,26 @@ class GameScene: SKScene, GameDelegate {
         
         // Get Coordinate From Touch Location
         let coordinate = getCoordinate(from: touch)
+        
+        registerEndTouch(at: coordinate)
+        
+        
+        
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        
+        // Get Coordinate From Touch Location
+        let coordinate = getCoordinate(from: touch)
+        
+        print("CANCELED")
+        
+        registerEndTouch(at: coordinate)
+        
+    }
+    
+    private func registerEndTouch(at coordinate: Coordinate) {
         
         // Validate Start Coordinate
         if let startCoordiante = movingStartCoordinate {

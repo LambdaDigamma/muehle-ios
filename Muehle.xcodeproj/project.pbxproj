@@ -47,6 +47,7 @@
 		DFD1ACBE1FA33638000898D4 /* ARGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD1ACBD1FA33638000898D4 /* ARGameViewController.swift */; };
 		DFDEC3991F9A8FDE00A2381E /* ThemeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDEC3981F9A8FDE00A2381E /* ThemeCollectionViewCell.swift */; };
 		DFDEC39B1F9B429F00A2381E /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDEC39A1F9B429F00A2381E /* CustomButton.swift */; };
+		DFE212AE1FA4C8AE00DB23E9 /* MiniMaxAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE212AD1FA4C8AE00DB23E9 /* MiniMaxAI.swift */; };
 		DFF4323E1F8982BB002EE8A0 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF4323D1F8982BB002EE8A0 /* TileNode.swift */; };
 		DFFCFF281F9BD3E700FF530F /* AIStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFCFF271F9BD3E600FF530F /* AIStrategy.swift */; };
 		DFFCFF2A1F9BE8F900FF530F /* RandomAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFCFF291F9BE8F900FF530F /* RandomAI.swift */; };
@@ -108,6 +109,7 @@
 		DFDEC3961F9A8EFD00A2381E /* CollectionViewShelfLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CollectionViewShelfLayout.framework; path = Carthage/Build/iOS/CollectionViewShelfLayout.framework; sourceTree = "<group>"; };
 		DFDEC3981F9A8FDE00A2381E /* ThemeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCollectionViewCell.swift; sourceTree = "<group>"; };
 		DFDEC39A1F9B429F00A2381E /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		DFE212AD1FA4C8AE00DB23E9 /* MiniMaxAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMaxAI.swift; sourceTree = "<group>"; };
 		DFF4323D1F8982BB002EE8A0 /* TileNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileNode.swift; sourceTree = "<group>"; };
 		DFFCFF271F9BD3E600FF530F /* AIStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIStrategy.swift; sourceTree = "<group>"; };
 		DFFCFF291F9BE8F900FF530F /* RandomAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAI.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				DF2316DE1F971B6800E8ACC3 /* AI.swift */,
 				DFFCFF271F9BD3E600FF530F /* AIStrategy.swift */,
 				DFFCFF291F9BE8F900FF530F /* RandomAI.swift */,
+				DFE212AD1FA4C8AE00DB23E9 /* MiniMaxAI.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				DFC1106A1F855E1000ED5AF2 /* Player.swift in Sources */,
 				DF2316D21F96808700E8ACC3 /* GameMode.swift in Sources */,
 				DFC110451F855DAD00ED5AF2 /* GameScene.swift in Sources */,
+				DFE212AE1FA4C8AE00DB23E9 /* MiniMaxAI.swift in Sources */,
 				DF2935EB1F955AA400DEBD4B /* SKTAudio.swift in Sources */,
 				DFC1106B1F855E1000ED5AF2 /* Difficulty.swift in Sources */,
 				DF2316D61F96943400E8ACC3 /* Theme.swift in Sources */,

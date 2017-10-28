@@ -42,7 +42,7 @@ class Game {
             switch mode {
             case .pvp: ai = nil
             case .pveEasy: ai = RandomAI(game: self)
-            case .pveMedium: ai = nil
+            case .pveMedium: ai = RandomAI(game: self)
             case .pveHard: ai = nil
             }
         }

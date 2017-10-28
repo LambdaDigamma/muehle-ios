@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -100,39 +99,39 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="G1v-zL-51y">
-                                <rect key="frame" x="16" y="567" width="343" height="60"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="G1v-zL-51y">
+                                <rect key="frame" x="16" y="587" width="343" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="907-N8-Vqs">
-                                        <rect key="frame" x="0.0" y="0.0" width="86" height="60"/>
-                                        <state key="normal" title="Settings">
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="907-N8-Vqs">
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="40"/>
+                                        <state key="normal" image="settings">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <segue destination="zpN-w7-7P2" kind="show" id="W2E-Uj-cBf"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="caS-2Z-KaW">
-                                        <rect key="frame" x="86" y="0.0" width="85.5" height="60"/>
-                                        <state key="normal" title="Shop">
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="caS-2Z-KaW">
+                                        <rect key="frame" x="88" y="0.0" width="79.5" height="40"/>
+                                        <state key="normal" image="shop">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <segue destination="zMm-eq-D08" kind="show" id="ZdE-q9-dfv"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gdV-qH-Gsb">
-                                        <rect key="frame" x="171.5" y="0.0" width="86" height="60"/>
-                                        <state key="normal" title="Themes">
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gdV-qH-Gsb">
+                                        <rect key="frame" x="175.5" y="0.0" width="80" height="40"/>
+                                        <state key="normal" image="theme">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <segue destination="zgW-xV-JKQ" kind="show" id="EzQ-qp-b5J"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vtg-tq-am1">
-                                        <rect key="frame" x="257.5" y="0.0" width="85.5" height="60"/>
-                                        <state key="normal" title="Info">
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vtg-tq-am1">
+                                        <rect key="frame" x="263.5" y="0.0" width="79.5" height="40"/>
+                                        <state key="normal" image="info">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
@@ -141,7 +140,7 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="P50-oW-pKT"/>
+                                    <constraint firstAttribute="height" constant="40" id="P50-oW-pKT"/>
                                 </constraints>
                             </stackView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mühle_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ure-YA-nSD">
@@ -255,6 +254,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jbK-5V-NUU"/>
                     </view>
+                    <connections>
+                        <outlet property="infoButton" destination="vtg-tq-am1" id="ssQ-ET-bit"/>
+                        <outlet property="settingsButton" destination="907-N8-Vqs" id="ds7-X8-dCY"/>
+                        <outlet property="shopButton" destination="caS-2Z-KaW" id="UR5-75-Yxa"/>
+                        <outlet property="themeButton" destination="gdV-qH-Gsb" id="gDy-kR-Toa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qDi-hj-vwz" sceneMemberID="firstResponder"/>
             </objects>
@@ -409,7 +414,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="info" width="500" height="500"/>
         <image name="mühle_logo" width="1000" height="250"/>
+        <image name="settings" width="500" height="500"/>
+        <image name="shop" width="500" height="500"/>
+        <image name="theme" width="500" height="500"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="13T-Ys-wbb"/>
