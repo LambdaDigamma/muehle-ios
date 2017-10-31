@@ -23,16 +23,14 @@ class GameScene: SKScene, GameDelegate {
     
     public var mode: GameMode = .pvp {
         didSet {
-            
-            if mode == .pvp {
 
-                setMidGame()
-                
+            game.mode = mode
+            
+            /*if mode == .pvp {
+
                 game.mode = mode
                 
             } else if mode == .pveMedium {
-
-                setMidGame()
                 
                 game.mode = mode
                 
@@ -40,7 +38,7 @@ class GameScene: SKScene, GameDelegate {
                 
                 game.mode = mode
                 
-            }
+            }*/
             
         }
     }
@@ -255,7 +253,7 @@ class GameScene: SKScene, GameDelegate {
                 if game.isValid(coordinate) && !game.isOccupied(coordinate) && game.turnIsAllowed(from: startCoordiante, to: coordinate) {
                     
                     // Set New Center
-                    guard let tileSprite = tileSprites.filter({ $0.tile.coordinate == startCoordiante }).first else { log.error("Could not load TileSprite"); return }
+                    guard let tileSprite = tileSprites.filter({ $0.tile.coordinate == startCoordiante }).first else { /*log.error("Could not load TileSprite");*/ return }
                     
                     // Register Turn
                     game.register(turn: Turn(player: game.playerToMove, originCoordinate: startCoordiante, destinationCoordinate: coordinate))
@@ -276,7 +274,7 @@ class GameScene: SKScene, GameDelegate {
                 if game.isValid(coordinate) && !game.isOccupied(coordinate) {
                     
                     // Set New Center
-                    guard let tileSprite = tileSprites.filter({ $0.tile.coordinate == startCoordiante }).first else { log.error("Could not load TileSprite"); return }
+                    guard let tileSprite = tileSprites.filter({ $0.tile.coordinate == startCoordiante }).first else { /*log.error("Could not load TileSprite");*/ return }
                     
                     // Register Turn
                     game.register(turn: Turn(player: game.playerToMove, originCoordinate: startCoordiante, destinationCoordinate: coordinate))
@@ -364,7 +362,7 @@ class GameScene: SKScene, GameDelegate {
             
         } else {
             
-            log.warning("Invalid touch location")
+//            log.warning("Invalid touch location")
             
         }
         
@@ -406,7 +404,7 @@ class GameScene: SKScene, GameDelegate {
         
         tileSprites = tileSprites.filter { $0.tile != tile }
         
-        log.info("Removed tile at \(tile.coordinate)")
+//        log.info("Removed tile at \(tile.coordinate)")
         
     }
     
@@ -557,7 +555,7 @@ class GameScene: SKScene, GameDelegate {
     
     func playerHasWon(_ player: Player) {
         
-        log.info("\(player.rawValue) has won!")
+//        log.info("\(player.rawValue) has won!")
         
         if player == GameConfig.aiPlayer && game.mode != .pvp {
             

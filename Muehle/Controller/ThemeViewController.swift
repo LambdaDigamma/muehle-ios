@@ -9,7 +9,7 @@
 import UIKit
 import CollectionViewShelfLayout
 
-struct CellIdentifier {
+fileprivate struct CellIdentifier {
     
     static let theme = "themeCell"
     
@@ -61,6 +61,8 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
         
     }
     
+    // MARK: - UICollectionViewDataSource
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return Theme.all.count
@@ -71,7 +73,11 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellIdentifier.theme, for: indexPath) as! ThemeCollectionViewCell
         
-//        cell.isUserInteractionEnabled = false
+        let isBought = (UIApplication.shared.delegate as! AppDelegate).settings.buyedThemes[indexPath.row]
+        
+        cell.isUserInteractionEnabled = isBought
+        
+        cell.disabled = !isBought
         
         cell.theme = Theme.all[indexPath.row]
         

@@ -13,4 +13,10 @@ enum Player: String {
     case a = "Blue" // "Weiß"
     case b = "Red" // "Schwarz"
     
+    public static func opponent(of player: Player) -> Player {
+        
+        return player == .a ? .b : .a
+        
+    }
+    
 }

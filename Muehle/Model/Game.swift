@@ -27,7 +27,7 @@ protocol GameDelegate {
     
 }
 
-class Game {
+class Game: NSCopying {
     
     // MARK: - Properties
     
@@ -35,15 +35,17 @@ class Game {
     public var state: State = .insert
     public var ai: AI? = nil
     
+    public var calc: Calculateable? = nil
+    
     public var playerToMove: Player = .a
     
     public var mode: GameMode = .pvp {
         didSet {
             switch mode {
-            case .pvp: ai = nil
-            case .pveEasy: ai = RandomAI(game: self)
-            case .pveMedium: ai = RandomAI(game: self)
-            case .pveHard: ai = nil
+            case .pvp: calc = nil
+            case .pveEasy: calc = AIRandom.shared() //AIMiniMax.shared(heuristic: HeuristicWeak.shared(), depth: 3)
+            case .pveMedium: calc = AIMiniMax.shared(heuristic: HeuristicTest.shared(), depth: 2) // 5
+            case .pveHard: calc = AIMiniMax.shared(heuristic: HeuristicStrong.shared(), depth: 2) // 5
             }
         }
     }
@@ -51,9 +53,9 @@ class Game {
     private var turns: [Turn] = []
     public var tiles: [Tile] = []
     public var playerCanRemove: Player? = nil
+    public var registeredMorris: [Morris] = []
     
     private var totalTileCounter = 0
-    private var registeredMorris: [Morris] = []
     private let log = Logger()
     
     public let notAllowedCoordinates = [Coordinate(col: 2, row: 1), Coordinate(col: 3, row: 1), Coordinate(col: 5, row: 1),
@@ -75,10 +77,10 @@ class Game {
         self.mode = mode
         
         switch mode {
-        case .pvp: ai = nil
-        case .pveEasy: ai = RandomAI(game: self)
-        case .pveMedium: ai = nil
-        case .pveHard: ai = nil
+        case .pvp: calc = nil
+        case .pveEasy: calc = AIRandom.shared() //AIMiniMax.shared(heuristic: HeuristicWeak.shared(), depth: 3)
+        case .pveMedium: calc = AIMiniMax.shared(heuristic: HeuristicTest.shared(), depth: 5)
+        case .pveHard: calc = AIMiniMax.shared(heuristic: HeuristicStrong.shared(), depth: 5)
         }
         
     }
@@ -135,7 +137,7 @@ class Game {
                 
             } else {
                 
-                log.info("\(playerToMove.rawValue) tried to insert tile at occupied coordinate")
+//                log.info("\(playerToMove.rawValue) tried to insert tile at occupied coordinate")
                 
             }
             
@@ -175,14 +177,14 @@ class Game {
             state = .move
             delegate?.changedState(.move)
             
-            log.info("Game State changed to 'MOVING'")
+//            log.info("Game State changed to 'MOVING'")
             
         }
         
         // Check For New Morris
         if let morris = newMorris(for: player) {
             
-            log.info("Morris for player \(player.rawValue)")
+//            log.info("Morris for player \(player.rawValue)")
             
             // Register Morris
             register(morris: morris)
@@ -217,7 +219,7 @@ class Game {
         
         delegate?.place(tile: tile)
         
-        log.info("Placed tile at \(tile.coordinate)")
+//        log.info("Placedtile at \(tile.coordinate)")
         
     }
     
@@ -239,7 +241,7 @@ class Game {
         
         if let tile = tiles.filter({ $0.coordinate == turn.originCoordinate }).first {
             
-            log.info("Logic - Turn: \(turn)")
+//            log.info("Logic - Turn: \(turn)")
             
             tile.coordinate = turn.destinationCoordinate
             
@@ -251,7 +253,7 @@ class Game {
             
             register(morris: m)
             
-            log.info("Morris for player \(turn.player.rawValue)")
+//            log.info("Morris for player \(turn.player.rawValue)")
             
             playerCanRemove = turn.player
             
@@ -284,30 +286,68 @@ class Game {
         
         delegate?.changedMoving(player: playerToMove)
         
-        log.info("\(playerToMove.rawValue) has a turn")
+//        log.info("\(playerToMove.rawValue) has a turn")
         
         // Execute AI Move
         if mode != .pvp && playerToMove == GameConfig.aiPlayer {
             
-            if state == .insert {
+            guard let move = calc?.calculateNextMove(game: self) else { fatalError("Unable to calculate next AI move") }
+            
+            switch move.action {
+            case .set:
                 
-                setAITile()
+                let coordinate = move.destinationCoordinate
                 
-            } else if state == .move {
+                addTileAndCheckMorris(at: coordinate, of: GameConfig.aiPlayer)
                 
-                moveAITile()
-                
-            } else if state == .jump {
-                
-                if playerCanJump(playerToMove) {
+                if playerCanRemove != nil {
                     
-                    jumpAITile()
-                    
-                } else {
-                    
-                    moveAITile()
+                    executeRemovingTurn()
                     
                 }
+                
+                break
+                
+            case .move:
+                
+                let turn = Turn(player: GameConfig.aiPlayer, originCoordinate: move.coordinate!, destinationCoordinate: move.destinationCoordinate)
+                
+//                log.info("AI \(turn)")
+                
+                executeTurnAndCheckMorris(turn)
+                
+                delegate?.moveAITile(turn: turn)
+                
+                if playerCanRemove != nil {
+                    
+                    executeRemovingTurn()
+                    
+                }
+                
+                break
+                
+            case .jump:
+                
+                let turn = Turn(player: GameConfig.aiPlayer, originCoordinate: move.coordinate!, destinationCoordinate: move.destinationCoordinate)
+                
+//                log.info("AI \(turn)")
+                
+                executeTurnAndCheckMorris(turn)
+                
+                delegate?.moveAITile(turn: turn)
+                
+                if playerCanRemove != nil {
+                    
+                    executeRemovingTurn()
+                    
+                }
+                
+                break
+                
+            case .remove:
+                fatalError("Should not go here!")
+                
+                break
                 
             }
             
@@ -321,7 +361,7 @@ class Game {
         
         registeredMorris.append(contentsOf: morris)
         
-        log.info("Registered \(morris)")
+//        log.info("Registered \(morris)")
         
     }
     
@@ -339,7 +379,7 @@ class Game {
             
         }
         
-        log.info("Updated / Removed not existing morrises")
+//        log.info("Updated / Removed not existing morrises")
         
     }
     
@@ -437,7 +477,7 @@ class Game {
         
     }
     
-    private func isTile(of player: Player, at coordinate: Coordinate) -> Bool {
+    public func isTile(of player: Player, at coordinate: Coordinate) -> Bool {
         
         return tiles.filter({ $0.player == player && $0.coordinate == coordinate }).count > 0
         
@@ -636,71 +676,94 @@ class Game {
     
     // MARK: - AI
     
-    public func setAITile() {
+    public func executeRemovingTurn() {
         
-        guard let ai = ai else { log.error("AI could not be loaded!"); return }
+        guard let removingMove = calc?.calculateNextMove(game: self) else { fatalError("Unable to calculate AI removing") }
         
-        let coordinate = ai.determineTile()
-        
-        addTileAndCheckMorris(at: coordinate, of: ai.aiPlayer)
-        
-        if playerCanRemove != nil {
+        if removingMove.action == .remove {
             
-            deleteAIOpponentTile()
+            let coordinate = removingMove.destinationCoordinate
             
-        }
-        
-    }
-    
-    public func moveAITile() {
-        
-        guard let ai = ai else { log.error("AI could not be loaded!"); return }
-        
-        let turn = ai.determineTurn()
-        
-        log.info("AI \(turn)")
-        
-        executeTurnAndCheckMorris(turn)
-        
-        delegate?.moveAITile(turn: turn)
-        
-        if playerCanRemove != nil {
+            removeTile(at: coordinate)
             
-            deleteAIOpponentTile()
+            if (playerATiles == 3 || playerBTiles == 3) && totalTileCounter >= 18 {
+                
+                state = .jump
+                delegate?.changedState(.jump)
+                
+            }
+            
+            changeCurrentPlayer()
+            
+        } else {
+            
+            fatalError("Should be a removing move")
             
         }
         
     }
     
-    public func jumpAITile() {
+    func copy(with zone: NSZone? = nil) -> Any {
         
-        guard let ai = ai else { log.error("AI could not be loaded!"); return }
+        let game = Game()
         
-        let turn = ai.determineJumpTurn()
+        game.mode = .pvp
+        game.calc = nil
+        game.state = self.state
+        game.playerToMove = self.playerToMove
+        game.turns = self.turns
+        game.tiles = self.tiles
+        game.playerCanRemove = self.playerCanRemove
+        game.totalTileCounter = self.totalTileCounter
+        game.registeredMorris = self.registeredMorris
         
-        log.info("AI \(turn)")
-        
-        executeTurnAndCheckMorris(turn)
-        
-        delegate?.moveAITile(turn: turn)
-        
-        if playerCanRemove != nil {
-            
-            deleteAIOpponentTile()
-            
-        }
+        return game
         
     }
     
-    public func deleteAIOpponentTile() {
+    public func numberOfPossibleMoves(for player: Player) -> Int {
         
-        guard let ai = ai else { log.error("AI could not be loaded!"); return }
+        var allPossibleTurns: [Turn] = []
         
-        let coordinate = ai.determineRemovingCoordinate()
+        for tile in tiles.filter({ $0.player == player }) {
+            
+            for destination in allowedTurns(from: tile.coordinate) {
+                
+                if !isOccupied(destination) {
+                    
+                    allPossibleTurns.append(Turn(player: player, originCoordinate: tile.coordinate, destinationCoordinate: destination))
+                    
+                }
+                
+            }
+            
+        }
         
-        removeTile(at: coordinate)
+        return allPossibleTurns.count
         
-        changeCurrentPlayer()
+    }
+    
+    public func numberOfPotentialMoves(for player: Player) -> Int {
+        
+        var allPotentialTurns: [Turn] = []
+        
+        for tile in tiles.filter({ $0.player == player }) {
+            
+            for destination in allowedTurns(from: tile.coordinate) {
+                
+                allPotentialTurns.append(Turn(player: player, originCoordinate: tile.coordinate, destinationCoordinate: destination))
+                
+            }
+            
+        }
+        
+        return allPotentialTurns.count
+        
+    }
+    
+    public func numberOfStones(for player: Player) -> Int {
+        
+        return tiles.filter({ $0.player == player }).count
         
     }
     

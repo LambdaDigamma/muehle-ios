@@ -15,6 +15,25 @@ class Settings {
     private let kCoins = "kCoins"
     private let kTheme = "kTheme"
     private let kGame = "kGame"
+    private let kBuyedThemes = "kBuyedThemes"
+    private let kIntroduction = "kIntroductionEnded"
+    private let kVolume = "kVolume"
+    
+    var introductionEnded: Bool {
+        
+        get {
+            
+            return UserDefaults.standard.bool(forKey: kIntroduction)
+            
+        }
+        
+        set {
+            
+            UserDefaults.standard.set(newValue, forKey: kIntroduction)
+            
+        }
+        
+    }
     
     var theme: Theme {
         
@@ -41,6 +60,46 @@ class Settings {
             UserDefaults.standard.set(newValue.name, forKey: kTheme)
             
         }
+        
+    }
+    
+    var buyedThemes: [Bool] {
+        
+        get {
+            
+            return UserDefaults.standard.object(forKey: kBuyedThemes) as? [Bool] ?? []
+            
+        }
+        
+        set {
+            
+            UserDefaults.standard.set(newValue, forKey: kBuyedThemes)
+            
+        }
+        
+    }
+    
+    func registerBuyed(theme: Theme) {
+        
+        var changeIndex: Int!
+        
+        for (i, t) in Theme.all.enumerated() {
+            
+            if t == theme {
+                
+                changeIndex = i
+                
+            }
+            
+        }
+        
+        var cp = buyedThemes
+        
+        cp[changeIndex] = true
+        
+        buyedThemes = cp
+        
+        coins -= theme.coins
         
     }
     
@@ -92,17 +151,17 @@ class Settings {
         
     }
     
-    var savedGame: Game {
+    var volume: Double {
         
         get {
             
-            return UserDefaults.standard.object(forKey: kGame) as? Game ?? Game()
+            return UserDefaults.standard.double(forKey: kVolume)
             
         }
         
         set {
             
-            UserDefaults.standard.set(newValue, forKey: kGame)
+            UserDefaults.standard.set(newValue, forKey: kVolume)
             
         }
         

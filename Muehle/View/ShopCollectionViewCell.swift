@@ -1,26 +1,28 @@
 //
-//  ThemeCollectionViewCell.swift
+//  ShopCollectionViewCell.swift
 //  Muehle
 //
-//  Created by Lennart Fischer on 20.10.17.
+//  Created by Lennart Fischer on 30.10.17.
 //  Copyright © 2017 Lennart Fischer. All rights reserved.
 //
 
 import UIKit
 
-class ThemeCollectionViewCell: UICollectionViewCell {
+class ShopCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var themeImageView: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var coinsLabel: UILabel!
     @IBOutlet weak var effectView: UIVisualEffectView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var coinImageView: UIImageView!
     
-    var disabled: Bool = false {
+    var notBought: Bool = false {
         didSet {
             
-            if disabled == true {
+            if notBought {
                 
-                themeImageView.alpha = 0.65
-                effectView.alpha = 0.65
+                coinsLabel.text = "✔︎"
+                coinImageView.isHidden = true
                 
             }
             
@@ -29,6 +31,8 @@ class ThemeCollectionViewCell: UICollectionViewCell {
     
     var theme: Theme! {
         didSet {
+            
+            coinImageView.isHidden = false
             
             if theme.name == "Default" {
                 themeImageView.image = #imageLiteral(resourceName: "default_preview")
@@ -45,11 +49,11 @@ class ThemeCollectionViewCell: UICollectionViewCell {
             nameLabel.text = theme.name
             nameLabel.textColor = theme.textColor
             
+            coinsLabel.text = "\(theme.coins)"
+            coinsLabel.textColor = theme.textColor
+            
             effectView.effect = UIBlurEffect(style: theme.boardColor == .white ? .dark : .extraLight)
             
-            
-            layer.borderWidth = 0
-            layer.borderColor = UIColor.clear.cgColor
             layer.cornerRadius = 20
             
         }

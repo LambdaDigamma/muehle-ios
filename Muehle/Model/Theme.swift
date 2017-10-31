@@ -20,6 +20,7 @@ struct Theme: Equatable {
     var name: String
     var textColor: UIColor
     var boardColor: BoardColor
+    var coins: Int
     var image: UIImage?
     var soundPath: String?
     var playerATexture: UIImage
@@ -27,7 +28,11 @@ struct Theme: Equatable {
     
     static var all: [Theme] {
         
-        return [Theme(name: "Default", textColor: UIColor.black, boardColor: .black, image: nil, soundPath: "Normal Theme.wav", playerATexture: #imageLiteral(resourceName: "standard_blue"), playerBTexture: #imageLiteral(resourceName: "standard_red")), Theme(name: "Space", textColor: UIColor.white, boardColor: .white, image: #imageLiteral(resourceName: "space"), soundPath: "Space Theme.wav", playerATexture: #imageLiteral(resourceName: "rocket_white"), playerBTexture: #imageLiteral(resourceName: "rocket_black"))]
+        return [Theme(name: "Default", textColor: UIColor.black, boardColor: .black, coins: 0, image: nil, soundPath: "Normal Theme.wav", playerATexture: #imageLiteral(resourceName: "standard_blue"), playerBTexture: #imageLiteral(resourceName: "standard_red")),
+                Theme(name: "Wood", textColor: UIColor.white, boardColor: .white, coins: 100, image: #imageLiteral(resourceName: "standard"), soundPath: "Normal Theme.wav", playerATexture: #imageLiteral(resourceName: "standard_blue"), playerBTexture: #imageLiteral(resourceName: "standard_red")),
+                Theme(name: "Space", textColor: UIColor.white, boardColor: .white, coins: 100, image: #imageLiteral(resourceName: "space"), soundPath: "Space Theme.wav", playerATexture: #imageLiteral(resourceName: "rocket_white"), playerBTexture: #imageLiteral(resourceName: "rocket_black")),
+                Theme(name: "Industry", textColor: UIColor.white, boardColor: .white, coins: 100, image: #imageLiteral(resourceName: "industry"), soundPath: "Industry Theme.wav", playerATexture: #imageLiteral(resourceName: "gear_blue"), playerBTexture: #imageLiteral(resourceName: "gear_red")),
+                Theme(name: "Snowy", textColor: UIColor.black, boardColor: .black, coins: 100, image: #imageLiteral(resourceName: "snowy"), soundPath: "Snowy Theme.wav", playerATexture: #imageLiteral(resourceName: "sledge_blue"), playerBTexture: #imageLiteral(resourceName: "sledge_red"))]
         
     }
     

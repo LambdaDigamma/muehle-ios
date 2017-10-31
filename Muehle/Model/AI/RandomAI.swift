@@ -8,19 +8,40 @@
 
 import UIKit
 
-class RandomAI: AI {
+let SharedRandomAI = RandomAI()
+
+class RandomAI: Calculateable {
     
     weak var game: Game!
     
     var aiPlayer = GameConfig.aiPlayer
     
-    init(game: Game) {
-        
-        self.game = game
+    fileprivate init() {
         
     }
     
-    func determineTile() -> Coordinate {
+    func calculateNextMove(game: Game) -> AIMove {
+        
+        var chosenMove: AIMove!
+        
+        var ac = action(for: GameConfig.aiPlayer, game: game)
+        
+        if game.state == .insert {
+            
+            let coordiante = determineTile(game: game)
+            
+            chosenMove = AIMove(action: .set, coordinate: coordiante)
+            
+        } else if game.state == .move {
+            
+//            let coordinate = determine
+            
+        }
+        
+        return chosenMove
+    }
+    
+    func determineTile(game: Game) -> Coordinate {
         
         var notOccupiedCoordinates: [Coordinate] = []
         
@@ -38,7 +59,7 @@ class RandomAI: AI {
         
     }
     
-    func determineTurn() -> Turn {
+    func determineTurn(game: Game) -> Turn {
         
         var allPossibleTurns: [Turn] = []
         
@@ -62,7 +83,7 @@ class RandomAI: AI {
         
     }
     
-    func determineJumpTurn() -> Turn {
+    func determineJumpTurn(game: Game) -> Turn {
         
         var allPossibleTurns: [Turn] = []
         
@@ -82,21 +103,53 @@ class RandomAI: AI {
         
     }
     
-    func determineRemovingCoordinate() -> Coordinate {
+    func determineRemovingCoordinate(game: Game) -> Coordinate {
         
-        let opponentPlayer: Player
-        
-        if aiPlayer == .b {
-            opponentPlayer = .a
-        } else {
-            opponentPlayer = .b
-        }
+        let opponentPlayer = Player.opponent(of: aiPlayer)
         
         let tiles = game.tiles.filter({ $0.player == opponentPlayer && !game.isInMorris(coordinate: $0.coordinate) })
         
         let index = tiles.count.random()
         
         return tiles[index].coordinate
+        
+    }
+    
+    private func action(for player: Player, game: Game) -> Action {
+        
+        if let removingPlayer = game.playerCanRemove {
+            
+            if removingPlayer == player {
+                
+                return .remove
+                
+            }
+            
+        }
+        
+        if game.state == .insert {
+            
+            return .set
+            
+        } else if game.state == .move {
+            
+            return .move
+            
+        } else if game.state == .jump {
+            
+            if game.playerCanJump(player) {
+                
+                return .jump
+                
+            } else {
+                
+                return .move
+                
+            }
+            
+        }
+        
+        return .set
         
     }
     
