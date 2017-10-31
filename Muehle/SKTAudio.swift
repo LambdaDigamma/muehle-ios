@@ -1,4 +1,5 @@
 import AVFoundation
+import UIKit
 
 /**
  * Audio player that uses AVFoundation to play looping background music and
@@ -27,7 +28,7 @@ public class SKTAudio {
       backgroundMusicPlayer = nil
     }
     if let player = backgroundMusicPlayer {
-      player.volume = GameConfig.volume
+      player.volume = Float((UIApplication.shared.delegate as! AppDelegate).settings.volume)
       player.numberOfLoops = -1
       player.prepareToPlay()
       player.play()

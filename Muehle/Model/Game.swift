@@ -43,7 +43,7 @@ class Game: NSCopying {
         didSet {
             switch mode {
             case .pvp: calc = nil
-            case .pveEasy: calc = AIRandom.shared() //AIMiniMax.shared(heuristic: HeuristicWeak.shared(), depth: 3)
+            case .pveEasy: calc = RandomAI.shared() //AIMiniMax.shared(heuristic: HeuristicWeak.shared(), depth: 1)
             case .pveMedium: calc = AIMiniMax.shared(heuristic: HeuristicTest.shared(), depth: 2) // 5
             case .pveHard: calc = AIMiniMax.shared(heuristic: HeuristicStrong.shared(), depth: 2) // 5
             }
@@ -78,9 +78,9 @@ class Game: NSCopying {
         
         switch mode {
         case .pvp: calc = nil
-        case .pveEasy: calc = AIRandom.shared() //AIMiniMax.shared(heuristic: HeuristicWeak.shared(), depth: 3)
-        case .pveMedium: calc = AIMiniMax.shared(heuristic: HeuristicTest.shared(), depth: 5)
-        case .pveHard: calc = AIMiniMax.shared(heuristic: HeuristicStrong.shared(), depth: 5)
+        case .pveEasy: calc = RandomAI.shared() //AIMiniMax.shared(heuristic: HeuristicWeak.shared(), depth: 1)
+        case .pveMedium: calc = AIMiniMax.shared(heuristic: HeuristicTest.shared(), depth: 2) // 5
+        case .pveHard: calc = AIMiniMax.shared(heuristic: HeuristicStrong.shared(), depth: 2) // 5
         }
         
     }
@@ -703,24 +703,6 @@ class Game: NSCopying {
         
     }
     
-    func copy(with zone: NSZone? = nil) -> Any {
-        
-        let game = Game()
-        
-        game.mode = .pvp
-        game.calc = nil
-        game.state = self.state
-        game.playerToMove = self.playerToMove
-        game.turns = self.turns
-        game.tiles = self.tiles
-        game.playerCanRemove = self.playerCanRemove
-        game.totalTileCounter = self.totalTileCounter
-        game.registeredMorris = self.registeredMorris
-        
-        return game
-        
-    }
-    
     public func numberOfPossibleMoves(for player: Player) -> Int {
         
         var allPossibleTurns: [Turn] = []
@@ -766,5 +748,24 @@ class Game: NSCopying {
         return tiles.filter({ $0.player == player }).count
         
     }
+    
+    func copy(with zone: NSZone? = nil) -> Any {
+        
+        let game = Game()
+        
+        game.mode = .pvp
+        game.calc = nil
+        game.state = self.state
+        game.playerToMove = self.playerToMove
+        game.turns = self.turns
+        game.tiles = self.tiles
+        game.playerCanRemove = self.playerCanRemove
+        game.totalTileCounter = self.totalTileCounter
+        game.registeredMorris = self.registeredMorris
+        
+        return game
+        
+    }
+
     
 }

@@ -13,11 +13,7 @@ class IntroductionViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        print("intro")
-        
         if (UIApplication.shared.delegate as! AppDelegate).settings.introductionEnded == true {
-            
-            print("segue")
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
@@ -35,6 +31,7 @@ class IntroductionViewController: UIViewController {
             
             settings.buyedThemes = defaultBuyedThemes
             settings.coins = 1000
+            settings.volume = 0.75
             
             settings.introductionEnded = true
             

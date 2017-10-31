@@ -147,6 +147,22 @@ class GameViewController: UIViewController {
             
         } else {
             
+            let settings = (UIApplication.shared.delegate as! AppDelegate).settings
+            
+            if mode == .pveEasy {
+                
+                settings.coins = settings.coins + 10
+                
+            } else if mode == .pveMedium {
+                
+                settings.coins = settings.coins + 25
+                
+            } if mode == .pveEasy {
+                
+                settings.coins = settings.coins + 50
+                
+            }
+            
             rootItem.descriptionText = "Congratulations! You have won against the AI!"
             
             winningBulletinManager.backgroundViewStyle = .blurredDark

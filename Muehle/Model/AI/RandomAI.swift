@@ -8,7 +8,7 @@
 
 import UIKit
 
-let SharedRandomAI = RandomAI()
+fileprivate let SharedRandomAI = RandomAI()
 
 class RandomAI: Calculateable {
     
@@ -20,21 +20,41 @@ class RandomAI: Calculateable {
         
     }
     
+    static func shared() -> RandomAI  {
+        
+        return SharedRandomAI
+        
+    }
+    
     func calculateNextMove(game: Game) -> AIMove {
         
         var chosenMove: AIMove!
         
-        var ac = action(for: GameConfig.aiPlayer, game: game)
+        let ac = action(for: GameConfig.aiPlayer, game: game)
         
-        if game.state == .insert {
+        if ac == .set {
             
             let coordiante = determineTile(game: game)
             
-            chosenMove = AIMove(action: .set, coordinate: coordiante)
+            chosenMove = AIMove(action: ac, coordinate: coordiante)
             
-        } else if game.state == .move {
+        } else if ac == .move {
             
-//            let coordinate = determine
+            let turn = determineTurn(game: game)
+            
+            chosenMove = AIMove(action: ac, originCoordinate: turn.originCoordinate, destinationCoordinate: turn.destinationCoordinate)
+            
+        } else if ac == .jump {
+            
+            let turn = determineJumpTurn(game: game)
+            
+            chosenMove = AIMove(action: ac, originCoordinate: turn.originCoordinate, destinationCoordinate: turn.destinationCoordinate)
+            
+        } else if ac == .remove {
+            
+            let coordinate = determineRemovingCoordinate(game: game)
+            
+            chosenMove = AIMove(action: ac, coordinate: coordinate)
             
         }
         
