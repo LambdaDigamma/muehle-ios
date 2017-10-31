@@ -7,3 +7,12 @@
 //
 
 import Foundation
+
+enum Action {
+    
+    case set
+    case move
+    case jump
+    case remove
+    
+}
