@@ -157,7 +157,7 @@ class GameViewController: UIViewController {
                 
                 settings.coins = settings.coins + 25
                 
-            } if mode == .pveEasy {
+            } else if mode == .pveEasy {
                 
                 settings.coins = settings.coins + 50
                 
