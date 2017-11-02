@@ -95,7 +95,6 @@
 		DF844BDC1FA394E700C2D5C7 /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
 		DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BulletinBoard.framework; path = Carthage/Build/iOS/BulletinBoard.framework; sourceTree = "<group>"; };
 		DFB5D07F1F936A7A0032FCF2 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		DFB5D0811F9394730032FCF2 /* SwiftyButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyButton.framework; path = Carthage/Build/iOS/SwiftyButton.framework; sourceTree = "<group>"; };
 		DFC1103B1F855DAD00ED5AF2 /* Muehle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Muehle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFC1103E1F855DAD00ED5AF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFC110401F855DAD00ED5AF2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -293,7 +292,6 @@
 			children = (
 				DFA201251F9BFE7C00EC98F6 /* BulletinBoard.framework */,
 				DFDEC3961F9A8EFD00A2381E /* CollectionViewShelfLayout.framework */,
-				DFB5D0811F9394730032FCF2 /* SwiftyButton.framework */,
 				DFC110701F87CFD900ED5AF2 /* Log.framework */,
 			);
 			name = Frameworks;
@@ -409,7 +407,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		DFC110721F87CFFC00ED5AF2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -419,7 +417,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
