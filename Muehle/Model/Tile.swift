@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Tile: Equatable {
+class Tile: Equatable, Copying {
     
     var coordinate: Coordinate
     var player: Player
@@ -17,6 +17,13 @@ class Tile: Equatable {
         
         self.coordinate = coordinate
         self.player = player
+        
+    }
+    
+    required init(original: Tile) {
+        
+        coordinate = original.coordinate
+        player = original.player
         
     }
     

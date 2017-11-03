@@ -94,7 +94,7 @@ class AIMiniMax: Calculateable {
         
         for i in 0..<possibleMoves.getNumberOfMoves() {
             
-            var gameClone = game.copy() as! Game
+            var gameClone = game.copy()
             
             switch possibleMoves.nextAction {
             case .set:
@@ -148,7 +148,7 @@ class AIMiniMax: Calculateable {
         // Simulate All Possible Turns
         for i in 0..<possibleMoves.getNumberOfMoves() {
             
-            var gameClone = game.copy() as! Game
+            var gameClone = game.copy()
             
             if depth == dynamicDepth && gameClone.playerCanRemove != nil {
                 
@@ -236,7 +236,7 @@ class AIMiniMax: Calculateable {
         
         for i in 0..<moves.getNumberOfMoves() {
             
-            let gameClone = game.copy() as! Game
+            let gameClone = game.copy()
             
             gameClone.registerTouch(at: moves.toMove[i])
             
@@ -251,7 +251,7 @@ class AIMiniMax: Calculateable {
             
         }
         
-        let changedGame = game.copy() as! Game
+        let changedGame = game.copy()
         changedGame.registerTouch(at: bestRemove)
         
         return changedGame
@@ -269,7 +269,7 @@ class AIMiniMax: Calculateable {
         // Simulate All Possible Turns
         for i in 0..<possibleMoves.getNumberOfMoves() {
             
-            let gameClone = game.copy() as! Game
+            let gameClone = game.copy()
             gameClone.registerTouch(at: possibleMoves.toMove[i])
             
             let moves = AIPossibleMoves(game: gameClone)
@@ -278,7 +278,7 @@ class AIMiniMax: Calculateable {
             // Explore Opponents Opportunities
             for j in 0..<moves.getNumberOfMoves() {
                 
-                let minClone = gameClone.copy() as! Game
+                let minClone = gameClone.copy()
                 
                 switch moves.nextAction {
                     

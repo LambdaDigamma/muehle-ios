@@ -27,7 +27,7 @@ protocol GameDelegate {
     
 }
 
-class Game: NSCopying {
+class Game: Copying {
     
     // MARK: - Properties
     
@@ -38,6 +38,8 @@ class Game: NSCopying {
     public var calc: Calculateable? = nil
     
     public var playerToMove: Player = .a
+    
+    private var numberOfChanges = 0
     
     public var mode: GameMode = .pvp {
         didSet {
@@ -69,6 +71,23 @@ class Game: NSCopying {
                                         Coordinate(col: 4, row: 4)]
     
     init() {
+        
+    }
+    
+    required init(original: Game) {
+        
+        mode = .pvp
+        calc = nil
+        
+        state = original.state
+        playerToMove = original.playerToMove
+        
+        turns = original.turns.clone()
+        tiles = original.tiles.clone()
+        registeredMorris = original.registeredMorris.clone()
+        
+        playerCanRemove = original.playerCanRemove
+        totalTileCounter = original.totalTileCounter
         
     }
     
@@ -277,6 +296,9 @@ class Game: NSCopying {
     
     private func changeCurrentPlayer() {
         
+        numberOfChanges += 1
+        print(numberOfChanges)
+        
         // Change To Next Player
         if playerToMove == .a {
             playerToMove = .b
@@ -291,12 +313,22 @@ class Game: NSCopying {
         // Execute AI Move
         if mode != .pvp && playerToMove == GameConfig.aiPlayer {
             
-            guard let move = calc?.calculateNextMove(game: self) else { fatalError("Unable to calculate next AI move") }
+            print("*******************")
+            
+            print(state)
+            
+            plot()
+            
+            print("*******************")
+            
+            let copyGame = self.copy()
+            
+            guard let move = calc?.calculateNextMove(game: copyGame) else { fatalError("Unable to calculate next AI move") }
             
             switch move.action {
             case .set:
                 
-                print("execute set turn")
+                print("Set turn: \(move.destinationCoordinate)")
                 
                 let coordinate = move.destinationCoordinate
                 
@@ -312,9 +344,11 @@ class Game: NSCopying {
                 
             case .move:
                 
-                print("execute move turn")
+                print("Move turn: \(move.coordinate!) to \(move.destinationCoordinate)")
                 
                 let turn = Turn(player: GameConfig.aiPlayer, originCoordinate: move.coordinate!, destinationCoordinate: move.destinationCoordinate)
+                
+                
                 
 //                log.info("AI \(turn)")
                 
@@ -684,7 +718,7 @@ class Game: NSCopying {
     
     public func executeRemovingTurn() {
         
-        guard let removingMove = calc?.calculateNextMove(game: self) else { fatalError("Unable to calculate AI removing") }
+        guard let removingMove = calc?.calculateNextMove(game: self.copy()) else { fatalError("Unable to calculate AI removing") }
         
         if removingMove.action == .remove {
             
@@ -754,24 +788,5 @@ class Game: NSCopying {
         return tiles.filter({ $0.player == player }).count
         
     }
-    
-    func copy(with zone: NSZone? = nil) -> Any {
-        
-        let game = Game()
-        
-        game.mode = .pvp
-        game.calc = nil
-        game.state = self.state
-        game.playerToMove = self.playerToMove
-        game.turns = self.turns
-        game.tiles = self.tiles
-        game.playerCanRemove = self.playerCanRemove
-        game.totalTileCounter = self.totalTileCounter
-        game.registeredMorris = self.registeredMorris
-        
-        return game
-        
-    }
-
     
 }

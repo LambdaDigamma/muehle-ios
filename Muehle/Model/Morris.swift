@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Morris: Equatable, CustomStringConvertible {
+class Morris: Equatable, CustomStringConvertible, Copying {
     
     var firstCoordinate: Coordinate
     var secondCoordinate: Coordinate
@@ -39,6 +39,15 @@ class Morris: Equatable, CustomStringConvertible {
         self.firstCoordinate = coordinates[0]
         self.secondCoordinate = coordinates[1]
         self.thirdCoordinate = coordinates[2]
+        
+    }
+    
+    required init(original: Morris) {
+        
+        firstCoordinate = original.firstCoordinate
+        secondCoordinate = original.secondCoordinate
+        thirdCoordinate = original.thirdCoordinate
+        player = original.player
         
     }
     

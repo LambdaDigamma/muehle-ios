@@ -24,9 +24,7 @@ class GameScene: SKScene, GameDelegate {
     public var mode: GameMode = .pvp {
         didSet {
 
-            game.mode = mode
-            
-            /*if mode == .pvp {
+            if mode == .pvp {
 
                 game.mode = mode
                 
@@ -38,7 +36,7 @@ class GameScene: SKScene, GameDelegate {
                 
                 game.mode = mode
                 
-            }*/
+            }
             
         }
     }
@@ -219,8 +217,6 @@ class GameScene: SKScene, GameDelegate {
         
         registerEndTouch(at: coordinate)
         
-        
-        
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -279,7 +275,7 @@ class GameScene: SKScene, GameDelegate {
                 if game.isValid(coordinate) && !game.isOccupied(coordinate) {
                     
                     // Set New Center
-                    guard let tileSprite = tileSprites.filter({ $0.tile.coordinate == startCoordiante }).first else { /*log.error("Could not load TileSprite");*/ return }
+                    guard let tileSprite = tileSprites.filter({ $0.tile.coordinate == startCoordiante }).first else { log.error("Could not load TileSprite"); return }
                     
                     // Register Turn
                     game.register(turn: Turn(player: game.playerToMove, originCoordinate: startCoordiante, destinationCoordinate: coordinate))
@@ -465,11 +461,11 @@ class GameScene: SKScene, GameDelegate {
         
         if game.mode != .pvp && tile.player == GameConfig.aiPlayer {
             
+            self.updateCounterLabels()
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                 
                 self.placeTile(tile)
-                
-                self.updateCounterLabels()
                 
             })
             
@@ -515,7 +511,7 @@ class GameScene: SKScene, GameDelegate {
         
         if game.state == .insert {
             
-            if game.isAIGameAndAIHasTurn() {
+            if !game.isAIGameAndAIHasTurn() {
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
 
@@ -531,17 +527,55 @@ class GameScene: SKScene, GameDelegate {
             
         } else if game.state == .move {
             
-            updatePromptLabel(with: "\(player.rawValue) to move")
+            if !game.isAIGameAndAIHasTurn() {
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                
+                    self.updatePromptLabel(with: "\(player.rawValue) to move")
+                    
+                })
+                
+            } else {
+                
+                updatePromptLabel(with: "\(player.rawValue) to move")
+                
+            }
             
         } else if game.state == .jump {
             
             if game.playerCanJump(player) {
                 
-                updatePromptLabel(with: "\(player.rawValue) to jump")
+                if !game.isAIGameAndAIHasTurn() {
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                        
+                        self.updatePromptLabel(with: "\(player.rawValue) to jump")
+                        
+                    })
+                    
+                } else {
+                    
+                    updatePromptLabel(with: "\(player.rawValue) to jump")
+                    
+                }
+                
+                
                 
             } else {
                 
-                updatePromptLabel(with: "\(player.rawValue) to move")
+                if !game.isAIGameAndAIHasTurn() {
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                        
+                        self.updatePromptLabel(with: "\(player.rawValue) to move")
+                        
+                    })
+                    
+                } else {
+                    
+                    updatePromptLabel(with: "\(player.rawValue) to move")
+                    
+                }
                 
             }
             
@@ -581,10 +615,22 @@ class GameScene: SKScene, GameDelegate {
     
     func moveAITile(turn: Turn) {
         
-        // Workaround Because Destination Of Tile Was Already Set Before
-        let point = center(from: turn.destinationCoordinate)
+        print(turn)
         
-        tileSprites.filter { $0.tile.coordinate == turn.destinationCoordinate }.first?.run(SKAction.move(to: point, duration: 1))
+        if game.mode == .pveEasy {
+            
+            // Workaround Because Destination Of Tile Was Already Set Before
+            let point = center(from: turn.destinationCoordinate)
+            
+            tileSprites.filter { $0.tile.coordinate == turn.destinationCoordinate }.first?.run(SKAction.move(to: point, duration: 1))
+            
+        } else if game.mode == .pveMedium || game.mode == .pveHard {
+            
+            let point = center(from: turn.destinationCoordinate)
+            
+            tileSprites.filter { $0.tile.coordinate == turn.destinationCoordinate }.first?.run(SKAction.move(to: point, duration: 1))
+            
+        }
         
     }
     

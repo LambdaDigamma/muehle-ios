@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Turn: CustomStringConvertible {
+class Turn: CustomStringConvertible, Copying {
     
     var player: Player
     var originCoordinate: Coordinate
@@ -19,6 +19,14 @@ class Turn: CustomStringConvertible {
         self.player = player
         self.originCoordinate = originCoordinate
         self.destinationCoordinate = destinationCoordinate
+        
+    }
+    
+    required init(original: Turn) {
+        
+        player = original.player
+        originCoordinate = original.originCoordinate
+        destinationCoordinate = original.destinationCoordinate
         
     }
     

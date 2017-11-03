@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Coordinate: Equatable, CustomStringConvertible, Hashable {
+class Coordinate: Equatable, CustomStringConvertible, Hashable, Copying {
 
     var col: Int
     var row: Int
@@ -31,6 +31,13 @@ class Coordinate: Equatable, CustomStringConvertible, Hashable {
         case 7: return "G"
         default: return "*"
         }
+        
+    }
+    
+    required init(original: Coordinate) {
+        
+        col = original.col
+        row = original.row
         
     }
     
