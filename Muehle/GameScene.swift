@@ -264,7 +264,12 @@ class GameScene: SKScene, GameDelegate {
                 } else if startCoordiante == coordinate {
                     
                     // Reset Tile To Its Old Coordinate
-                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: startCoordiante)
+                    
+                } else {
+                    
+                    // Reset Tile To Its Old Coordinate
+                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: startCoordiante)
                     
                 }
                 
@@ -286,6 +291,11 @@ class GameScene: SKScene, GameDelegate {
                     
                     // Reset Tile To Its Old Coordinate
                     tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: coordinate)
+                    
+                } else {
+                    
+                    // Reset Tile To Its Old Coordinate
+                    tileSprites.filter { $0.tile.coordinate == startCoordiante }.first?.position = center(from: startCoordiante)
                     
                 }
                 

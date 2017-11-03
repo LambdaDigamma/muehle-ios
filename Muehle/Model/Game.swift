@@ -296,6 +296,8 @@ class Game: NSCopying {
             switch move.action {
             case .set:
                 
+                print("execute set turn")
+                
                 let coordinate = move.destinationCoordinate
                 
                 addTileAndCheckMorris(at: coordinate, of: GameConfig.aiPlayer)
@@ -309,6 +311,8 @@ class Game: NSCopying {
                 break
                 
             case .move:
+                
+                print("execute move turn")
                 
                 let turn = Turn(player: GameConfig.aiPlayer, originCoordinate: move.coordinate!, destinationCoordinate: move.destinationCoordinate)
                 
@@ -327,6 +331,8 @@ class Game: NSCopying {
                 break
                 
             case .jump:
+                
+                print("execute jump turn")
                 
                 let turn = Turn(player: GameConfig.aiPlayer, originCoordinate: move.coordinate!, destinationCoordinate: move.destinationCoordinate)
                 
